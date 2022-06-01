@@ -24,4 +24,8 @@ Medios de comunicacion
     Muni Chañaral           https://www.munichanaral.cl/noticias.html               Chañaral
     El noticiero del Huasco https://elnoticierodelhuasco.cl                         Huasco 
     HuascoTv                http://www.huascotelevisionstreaming.cl                 Huasco
-
+    Noticias Huasco         https://twitter.com/NoticierodelHua                     Huasco  
+    Vallenar Online         https://twitter.com/VallenarOnline                      Vallenar
+    Tierra amarillano       https://twitter.com/tamarillano                         Tierra Amarilla
+    Nostalgica              https://www.nostalgica.cl                               Atacama
+    Radio Genesis           https://www.radiogennesis.cl                            Atacama
