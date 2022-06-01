@@ -2,11 +2,12 @@ Diccionario de Datos
 
 Datos - Tipo de Datos - Ejemplo
 
+
+
+Noticia:
 Fecha - Date -  YYYY-MM-DD
 Region - varChar - III
 Comuna -varChar - Copiapo
-
-Noticia:
 URL noticia - varChar - https://www.elquehaydecierto.cl/noticia/medioambiente/sismo-sacudio-la-region-de-atacama-esta-manana
 Titulo - text - Sismo sacudio la region de Atacama esta semana
 Fecha Publicacion - Date - 2022-03-12
@@ -26,7 +27,7 @@ Nombre - varChar - Fulanito Gonzales
 Tipo - char - Natural o Empresa
 Fecha - Date - YYYY-MM-DD
 
-Mencion
+Persona mencionada
 Nombre - varChar - Pedro Soto
 Wiki - varChar - wikipedia.com/Pedro_Soto
 Profesion - varChar - Paseador de Perros
