@@ -35,6 +35,10 @@ Persona mencionada
 - Profesion - varChar - Paseador de Perros
 - Fecha Nacimiento - Date - 1999-06-25
 - Nacionalidad - varChar - Chile
-- Popu - Int - 10
+---
+Popularidad
+- Promedio_Vis - INT - 88
+- Visitas - INT  - 108
+- Fecha - Date - 2022-06-28
 
 

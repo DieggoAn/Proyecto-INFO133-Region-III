@@ -4,10 +4,21 @@ dataBase = mysql.connector.connect(
   host ="localhost",
   user ="root",
   passwd ="5284",
-  database = "Atacama"
 )
- 
-# Definir objeto cursos
+
+cursorObject = dataBase.cursor()
+
+cursorObject.execute("CREATE DATABASE IF NOT EXISTS Atacama")
+
+cursorObject.execute(dataBase.close())
+
+dataBase = mysql.connector.connect(
+  host ="localhost",
+  user ="root",
+  passwd ="5284",
+  database = "Atacama",
+)
+
 cursorObject = dataBase.cursor()
 
 # Tablas Simples
@@ -42,25 +53,26 @@ Noticia = """CREATE TABLE IF NOT EXISTS NOTICIA(
         TITULO VARCHAR(512),
         TEXTO TEXT NOT NULL,
         FECHA_PUB DATE,
-        URL_MEDIO_FK FOREIGN KEY REFERENCES MEDIO (URL_MEDIO_PK)
+        URL_MEDIO_FK VARCHAR(512) REFERENCES MEDIO (URL_MEDIO_PK)
         )""" 
 
 # Tablas Intermedias
 Adquiere = """CREATE TABLE IF NOT EXISTS ADQUIERE(
-        ID_DUENO_FK FOREIGN KEY REFERENCES DUENO (ID_DUENO_PK),
-        URL_MEDIO_FK FOREIGN KEY REFERENCES MEDIO (URL_MEDIO_PK),
+        ID_DUENO_FK INT REFERENCES DUENO (ID_DUENO_PK),
+        URL_MEDIO_FK  VARCHAR (512) REFERENCES MEDIO (URL_MEDIO_PK),
         FECHA_ADQ DATE
         )"""
 
 Menciona = """CREATE TABLE IF NOT EXISTS MENCIONA(
-        ID_PERSONA_FK FOREIGN KEY REFERENCES PERSONA (ID_PERSONA_PK),
-        URL_NOTICIA_FK FOREIGN KEY REFERENCES NOTICIA (URL_NOTICIA_PK),
+        ID_PERSONA_FK  INT REFERENCES PERSONA (ID_PERSONA_PK),
+        URL_NOTICIA_FK VARCHAR(512) REFERENCES NOTICIA (URL_NOTICIA_PK)
         )"""  
 
-#Popularidad = """CREATE TABLE IF NOT EXISTS POPULARIDAD(
-#                    Fecha date,
-#                    Valor INT
-#                    )"""
+Popularidad = """CREATE TABLE IF NOT EXISTS POPULARIDAD(
+                    ID_PERSONA_FK INT REFERENCES PERSONA (ID_PERSONA_PK),
+                    Fecha date,
+                    Valor INT
+                    )"""
  
 
 cursorObject.execute(Dueno)
@@ -69,6 +81,6 @@ cursorObject.execute(Persona)
 cursorObject.execute(Noticia)
 cursorObject.execute(Adquiere)
 cursorObject.execute(Menciona)
-#cursorObject.execute(Popularidad)
+cursorObject.execute(Popularidad)
 
 # cursorObject.execute("SHOW DATABASES")
