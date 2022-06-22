@@ -70,8 +70,8 @@ Menciona = """CREATE TABLE IF NOT EXISTS MENCIONA(
 
 Popularidad = """CREATE TABLE IF NOT EXISTS POPULARIDAD(
                     ID_PERSONA_FK INT REFERENCES PERSONA (ID_PERSONA_PK),
-                    Fecha date,
-                    Valor INT
+                    FECHA date,
+                    VALOR INT
                     )"""
  
 
