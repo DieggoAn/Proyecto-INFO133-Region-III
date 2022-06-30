@@ -1,9 +1,15 @@
 import mysql.connector
- 
+
+
+
+#in_host = input("Host: ")
+in_user = input("Usuario: ")
+in_passwd = input("Contraseña: ")
+
 dataBase = mysql.connector.connect(
-  host ="localhost",
-  user ="root",
-  passwd ="5284",
+  host = "localhost",
+  user = in_user,
+  passwd = in_passwd,
 )
 
 cursorObject = dataBase.cursor()
@@ -13,9 +19,9 @@ cursorObject.execute("CREATE DATABASE IF NOT EXISTS Atacama")
 cursorObject.execute(dataBase.close())
 
 dataBase = mysql.connector.connect(
-  host ="localhost",
-  user ="root",
-  passwd ="5284",
+  host = "localhost",
+  user = in_user,
+  passwd = in_passwd,
   database = "Atacama",
 )
 
@@ -23,13 +29,13 @@ cursorObject = dataBase.cursor()
 
 # Tablas Simples
 Dueno = """CREATE TABLE IF NOT EXISTS DUENO(
-        ID_DUENO_PK INT PRIMARY KEY,
+        ID_DUENO INT PRIMARY KEY,
         NOMBRE VARCHAR(50),
         TIPO VARCHAR(10)
         )"""
 
 Medio = """CREATE TABLE IF NOT EXISTS MEDIO(
-        URL_MEDIO_PK VARCHAR(512) PRIMARY KEY,
+        URL_MEDIO VARCHAR(512) PRIMARY KEY,
         NOMBRE VARCHAR(50),
         PAIS VARCHAR(20),
         IDIOMA VARCHAR(20),
@@ -38,8 +44,7 @@ Medio = """CREATE TABLE IF NOT EXISTS MEDIO(
         )"""
 
 Persona = """CREATE TABLE IF NOT EXISTS PERSONA(
-        ID_PERSONA_PK INT PRIMARY KEY,
-        POPULARIDAD INT,
+        ID_PERSONA INT PRIMARY KEY,
         WIKI VARCHAR(512),
         NOMBRE VARCHAR(50),
         PROFESION VARCHAR(50),
@@ -47,40 +52,54 @@ Persona = """CREATE TABLE IF NOT EXISTS PERSONA(
         FECHA_NAC DATE
         )"""
 
+Popularidad = """CREATE TABLE IF NOT EXISTS POPULARIDAD(
+        FECHA_POP DATE PRIMARY KEY
+        )"""
+
 # Tablas Dependientes
 Noticia = """CREATE TABLE IF NOT EXISTS NOTICIA(
-        URL_NOTICIA_PK VARCHAR(512) PRIMARY KEY,
+        URL_NOTICIA VARCHAR(512) PRIMARY KEY,
         TITULO VARCHAR(512),
         TEXTO TEXT NOT NULL,
         FECHA_PUB DATE,
-        URL_MEDIO_FK VARCHAR(512) REFERENCES MEDIO (URL_MEDIO_PK)
+        URL_MEDIO VARCHAR(512),
+        FOREIGN KEY (URL_MEDIO) REFERENCES MEDIO (URL_MEDIO)
         )""" 
 
 # Tablas Intermedias
 Adquiere = """CREATE TABLE IF NOT EXISTS ADQUIERE(
-        ID_DUENO_FK INT REFERENCES DUENO (ID_DUENO_PK),
-        URL_MEDIO_FK  VARCHAR (512) REFERENCES MEDIO (URL_MEDIO_PK),
+        ID_DUENO INT,
+        FOREIGN KEY (ID_DUENO) REFERENCES DUENO (ID_DUENO),
+        URL_MEDIO VARCHAR(512),
+        FOREIGN KEY (URL_MEDIO) REFERENCES MEDIO (URL_MEDIO),
         FECHA_ADQ DATE
         )"""
 
 Menciona = """CREATE TABLE IF NOT EXISTS MENCIONA(
-        ID_PERSONA_FK  INT REFERENCES PERSONA (ID_PERSONA_PK),
-        URL_NOTICIA_FK VARCHAR(512) REFERENCES NOTICIA (URL_NOTICIA_PK)
+        ID_PERSONA INT,
+        FOREIGN KEY (ID_PERSONA) REFERENCES PERSONA (ID_PERSONA),
+        URL_NOTICIA VARCHAR(512),
+        FOREIGN KEY (URL_NOTICIA) REFERENCES NOTICIA (URL_NOTICIA)
         )"""  
 
-Popularidad = """CREATE TABLE IF NOT EXISTS POPULARIDAD(
-                    ID_PERSONA_FK INT REFERENCES PERSONA (ID_PERSONA_PK),
-                    FECHA date,
-                    VALOR INT
-                    )"""
- 
+Tiene = """CREATE TABLE IF NOT EXISTS TIENE(
+        ID_PERSONA INT,
+        FOREIGN KEY (ID_PERSONA) REFERENCES PERSONA (ID_PERSONA),
+        FECHA_POP DATE,
+        FOREIGN KEY (FECHA_POP) REFERENCES POPULARIDAD (FECHA_POP),
+        VALOR INT
+        )"""
 
+# Tablas Simples
 cursorObject.execute(Dueno)
 cursorObject.execute(Medio)
 cursorObject.execute(Persona)
+cursorObject.execute(Popularidad)
+# Tablas Dependientes
 cursorObject.execute(Noticia)
+# Tablas Intermedias
 cursorObject.execute(Adquiere)
 cursorObject.execute(Menciona)
-cursorObject.execute(Popularidad)
+cursorObject.execute(Tiene)
 
 # cursorObject.execute("SHOW DATABASES")
