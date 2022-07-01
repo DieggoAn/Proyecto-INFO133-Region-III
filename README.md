@@ -10,9 +10,9 @@ Nombre Integrante - Email - GitHub
 Medios de comunicacion 
     Nombre - Url - Comuna
 
-    El diario de Atacama	http://www.soychile.cl/copiapo/	                        Atacama
+    El diario de Atacama	https://www.soychile.cl/copiapo/	                        Atacama
     Red Atacama	            http://www.redatacama.com/                           	Atacama
-    Diario de Atacama	    http://www.diarioatacama.cl/impresa/2016/04/09/papel/	Atacama
+    Diario de Atacama	    https://www.diarioatacama.cl/                       	Atacama
     Diario Chañarcillo	    http://www.chanarcillo.cl/	                            Copiapó
     El Quehaydecierto	    http://www.elquehaydecierto.cl/	                        Copiapó
     Digital Fm Copiapó	    http://www.digitalfm.cl/	                            Copiapó

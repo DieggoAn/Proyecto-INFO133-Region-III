@@ -3,8 +3,6 @@ from colorama import Cursor
 import mysql.connector
 import msvcrt
  
- #INPUT MODE
- # -> 1 (TUPLA SQL "(DATO1,DATO2,DATO3,...,DATON)")
 INPUT_MODE = 1
 INPUT_DATO=3
 VIEW_MODE = 2
@@ -61,6 +59,8 @@ def textASCII(mode=INPUT_MODE,tabla="N/A"):
       textASCII += SelecTablaASCII()
     elif mode == VIEW_DATO:
       textASCII = "[=][ TABLA SELECCIONADA: {} ][=]".format(tabla).replace("[","(").replace("]",")") + "\n>>>"
+    else:
+      return "N/A"
     return textASCII
 
 def anadirDatoASCII(tabla):
