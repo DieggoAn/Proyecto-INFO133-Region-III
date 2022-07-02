@@ -9,7 +9,7 @@ XPATH_DATE = "//span[@class='media-fecha-modificacion']"
 XPATH_TITLE = "//h1[@class='note-inner-title']//puskeleton"
 XPATH_TEXT = "//div[@class='note-inner-text']"
 
-#= //div[@class='note-inner-text'] -----> div[class='']
+#= //div[@class=''] -----> div[class='']
 def formatWait(xpath_text):
   texto = xpath_text
   texto = texto.replace("/","").replace("@","")
@@ -48,12 +48,16 @@ USER_AGENT_LIST = [
 ]
 
 #Lista de Noticias
-doc = ["http://www.soychile.cl/copiapo/policial/2022/06/30/764289/detienen-a-mujer-por-crimen.html","https://www.soychile.cl/copiapo/sociedad/2022/06/29/764119/tasa-desempleo-en-atacama.html","https://www.soychile.cl/copiapo/sociedad/2022/06/28/763909/uda-realiza-especializacion-ginecologia.html"]
+doc = ["http://www.soychile.cl/copiapo/policial/2022/06/30/764289/detienen-a-mujer-por-crimen.html","http://www.soychile.cl/copiapo/sociedad/2022/06/29/764119/tasa-desempleo-en-atacama.html","http://www.soychile.cl/copiapo/sociedad/2022/06/28/763909/uda-realiza-especializacion-ginecologia.html","http://www.soychile.cl/copiapo/policial/2022/06/26/763729/persona-resulta-herida-a-bala.html","http://www.soychile.cl/copiapo/sociedad/2022/06/25/763638/ceaza-pronostica-lluvias-en-atacama.html","http://www.soychile.cl/copiapo/policial/2022/06/24/763537/formalizan-a-sujeto-por-homicidio.html","http://www.soychile.cl/copiapo/policial/2022/06/23/763412/detienen-a-asaltantes-de-servicentro.html","http://www.soychile.cl/copiapo/sociedad/2022/06/23/763329/huasco-comienza-celebracion-san-pedro.html","http://www.soychile.cl/copiapo/sociedad/2022/06/22/763093/sorpresiva-lluvia-en-copiapo.html","http://www.soychile.cl/copiapo/policial/2022/06/21/763038/recuperan-vehiculo-robado-tierra-amarilla.html","http://www.soychile.cl/copiapo/sociedad/2022/06/21/763034/casos-diarios-covid-atacama.html","http://www.soychile.cl/copiapo/policial/2022/06/21/763033/arresto-de-adolescentes.html","http://www.soychile.cl/copiapo/sociedad/2022/06/19/762752/casos-diarios-covid-atacama.html","http://www.soychile.cl/copiapo/policial/2022/06/19/762748/choque-al-poste-en-huasco.html","http://www.soychile.cl/copiapo/sociedad/2022/06/19/762744/rescate-en-parque-tres-cruces.html","http://www.soychile.cl/copiapo/policial/2022/06/17/762478/adolescente-muerto-en-copiapo.html","http://www.soychile.cl/copiapo/sociedad/2022/06/16/762286/diputada-cid-rechaza-asesinato.html","http://www.soychile.cl/copiapo/policial/2022/06/15/762115/atacama-con-378-casos-covid.html","http://www.soychile.cl/copiapo/policial/2022/06/14/761935/formalizan-a-chofer-accidente-palomar.html","http://www.soychile.cl/copiapo/sociedad/2022/06/28/763906/pescadores-se-toman-ruta.html"]
 
 ## URL que escrapear
-URL = doc[0]
+URL = doc[4]
 
-#=====================Funciones de formato=====================#
+#=====================[FUNCIONES DE FORMATO]=====================#
+#= # Las funciones de formato tienen como objetivo manejar la informacion
+#= directamente salida del scraping y modificar las cadenas de texto, para
+#= poderser añadidas a traves de SQL sin tener problemas de formato.
+#=====================[FUNCIONES DE FORMATO]=====================#
 def format_date(raw_date):
   meses = {"Enero":"01","Febrero":"02","Marzo":"03","Abril":"04","Mayo":"05","Junio":"06","Julio":"07","Agosto":"08","Septiembre":"09","Octubre":"10","Noviembre":"11","Diciembre":"12"}
   texto = ""
@@ -158,12 +162,13 @@ cursorObject = dataBase.cursor(buffered=True)
 try:
   session.loop.run_until_complete(funcionJs())
 finally: #Guardar los datos en MariaDB
-  c = 0
-  while URL[c:c+8] != ".cl/http" and URL[c:c+8] != "com/http" and URL[c:c+8] != "apo/poli":
-    c += 1
-  c += 1
-  url_medio = URL[:c+3]
-  print(url_medio)
+  cursorObject.execute("SELECT URL_MEDIO FROM MEDIO;")
+  medios = []
+  for i in cursorObject:
+    medios.append(i[0])
+  for i in medios:
+    if i in URL:
+      url_medio = i
   print(URL)
   print(norm_fecha)
   print(norm_title)
@@ -171,3 +176,6 @@ finally: #Guardar los datos en MariaDB
   cursorObject.execute(f"INSERT INTO noticia (URL_NOTICIA,TITULO,TEXTO,FECHA_PUB,URL_MEDIO) VALUES ('{URL}', '{norm_title}', '{norm_text}', '{norm_fecha}', '{url_medio}')")
   dataBase.commit()
   dataBase.close()
+  #Existe un problema para cerrar, a veces, de forma aleatoria, no te permite cerrar la sesion
+  #No supone un riesgo para la funcionalidad, quedese libre se ser corregido o no
+  session.close()
