@@ -48,7 +48,7 @@ USER_AGENT_LIST = [
 ]
 
 #Lista de Noticias
-doc = ["https://www.soychile.cl/copiapo/policial/2022/06/30/764289/detienen-a-mujer-por-crimen.html","https://www.soychile.cl/copiapo/sociedad/2022/06/29/764119/tasa-desempleo-en-atacama.html","https://www.soychile.cl/copiapo/sociedad/2022/06/28/763909/uda-realiza-especializacion-ginecologia.html"]
+doc = ["http://www.soychile.cl/copiapo/policial/2022/06/30/764289/detienen-a-mujer-por-crimen.html","https://www.soychile.cl/copiapo/sociedad/2022/06/29/764119/tasa-desempleo-en-atacama.html","https://www.soychile.cl/copiapo/sociedad/2022/06/28/763909/uda-realiza-especializacion-ginecologia.html"]
 
 ## URL que escrapear
 URL = doc[0]
@@ -95,6 +95,8 @@ def format_title(raw_title):
     c += 1
   return texto[c:]
 
+#=============================================================#
+
 #===================[SCRAP]===================#
 #= #Se optó por hacer todas las peticiones en la misma funcion,
 #= a pesar de no ser necesario el JavaScript con algunos atributos
@@ -107,6 +109,7 @@ async def funcionJs():
   global norm_fecha
   global norm_title
   global norm_text
+  #Extraer url del medio
   #Esperar la respuesta hasta que apareza la etiqueta
   await response.html.page.waitForSelector(WAIT_DATE)
   #Extraer fecha
@@ -131,36 +134,40 @@ response = session.get(URL,headers=headers)
 
 response.html.render(sleep=1,keep_page=True)
 
-#=================Extraer url del medio=================#
-c = 0
-while URL[c-4:c] == "cl/h" or URL[c-5:c] == ".com/" or URL[c-4:c] == "apo/":
-  c += 1
-url_medio = URL[:c]
 #=======================================================#
-
 # Conectarse a MariaDB para guardar los datos escrapeados
-in_user = input("Usuario: ")
-in_passwd = input("Contraseña: ")
-
-dataBase = mysql.connector.connect(
-  host = "localhost",
-  user = in_user,
-  passwd = in_passwd,
-  database = "atacama"
-)
+inputUserOn = True
+while inputUserOn:
+  in_user = input("Usuario: ")
+  in_passwd = input("Contraseña: ")
+  try:
+    dataBase = mysql.connector.connect(
+    host = "localhost",
+    user = in_user,
+    passwd = in_passwd,
+    database = "atacama")
+  except Exception as e:
+    print("Hubo un error en la conexion a MariaDB:", e)
+  else:
+    inputUserOn = False
 
 # Get Cursor
 cursorObject = dataBase.cursor(buffered=True)
 
+#Ejecutar 
 try:
   session.loop.run_until_complete(funcionJs())
 finally: #Guardar los datos en MariaDB
+  c = 0
+  while URL[c:c+8] != ".cl/http" and URL[c:c+8] != "com/http" and URL[c:c+8] != "apo/poli":
+    c += 1
+  c += 1
+  url_medio = URL[:c+3]
   print(url_medio)
   print(URL)
   print(norm_fecha)
   print(norm_title)
   print(norm_text)
-  query= f"INSERT INTO noticia (URL_NOTICIA,TITULO,TEXTO,FECHA_PUB,URL_MEDIO) VALUES ('{URL}', '{norm_title}', '{norm_text}', '{norm_fecha}', '{url_medio}')"
-  cursorObject.execute(query)
+  cursorObject.execute(f"INSERT INTO noticia (URL_NOTICIA,TITULO,TEXTO,FECHA_PUB,URL_MEDIO) VALUES ('{URL}', '{norm_title}', '{norm_text}', '{norm_fecha}', '{url_medio}')")
   dataBase.commit()
   dataBase.close()
