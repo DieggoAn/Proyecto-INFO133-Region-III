@@ -11,7 +11,7 @@ def format_date(date):
 session = HTMLSession()
 
 ## URL "SEED" que escrapear
-URL_SEED = "https://www.redatacama.com"
+URL_SEED = "https://www.radiogennesis.cl/noticias/"
 
 ## Simular que estamos utilizando un navegador web
 USER_AGENT_LIST = [
@@ -41,14 +41,14 @@ response = session.get(URL_SEED,headers=headers)
 ## Analizar ("to parse") el contenido
 
 xpath_url="//article//h3/a/@href"
-xpath_date="//li[@class='main_fecha']"
-xpath_text="//div[@class='CUERPO']//p"
+xpath_date="//span [@class='elementor-icon-list-text elementor-post-info_item elementor-post-info_item--type-date']//p"
+xpath_text="//div[@class='elementor-widget-container']//p"
 
 all_urls = response.html.xpath(xpath_url)
 
 
 for url in all_urls:
-        article_url = "https://www.redatacama.com" + url
+        article_url = "https://www.radiogennesis.cl/noticias/" + url
 
         headers = {'user-agent':random.choice(USER_AGENT_LIST) }
         response = session.get(article_url,headers=headers)
