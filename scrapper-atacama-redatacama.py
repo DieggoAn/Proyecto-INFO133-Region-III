@@ -70,7 +70,11 @@ for url in all_urls:
 
         print(article_url)
         print(title)
+<<<<<<< Updated upstream
         print(date)
+=======
+        print(format_date(date))
+>>>>>>> Stashed changes
         print(text)
         print()
 
