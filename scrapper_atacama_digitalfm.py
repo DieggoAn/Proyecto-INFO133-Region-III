@@ -1,12 +1,12 @@
 from requests_html import HTMLSession
 import random
 
-URL_MEDIO = "https://www.soychile.cl/copiapo"
-XPATH_URLS = "//h2[@class='media-heading']//a//@href"
+URL_MEDIO = "http://www.digitalfm.cl/"
+XPATH_URLS = "//div[@class='podcast-home__item__title']//h2//a//@href"
 
-XPATH_DATE = "//span[@class='media-fecha-modificacion']"
-XPATH_TITLE = "//h1[@class='note-inner-title']//puskeleton"
-XPATH_TEXT = "//div[@class='note-inner-text']"
+XPATH_DATE = "//div[@class='podcast__item__date']//h5"
+XPATH_TITLE = "//div[@class='podcast__item__title']//h1"
+XPATH_TEXT = "//div[@class='podcast__item__excerpt']//p"
 
 def formatWait(xpath_text):
   texto = xpath_text
@@ -52,9 +52,7 @@ async def funcionUrls(url_medio):
   await respuesta.html.page.waitForSelector(WAIT_URLS)
   page_urls = await respuesta.html.page.xpath(XPATH_URLS)
   for i in range(0,len(page_urls)):
-    text_url = await respuesta.html.page.evaluate('(e) => e.textContent', page_urls[i])
-    if "/copiapo" in text_url:
-      list_href.append(text_url)
+    list_href.append(await respuesta.html.page.evaluate('(e) => e.textContent', page_urls[i]))
   await respuesta.html.page.close()
   print(list_href)
 
@@ -92,7 +90,7 @@ sesionHTML = HTMLSession()
 renderizar_pagina(URL_MEDIO)
 sesionHTML.loop.run_until_complete(funcionUrls(URL_MEDIO))
 for href in list_href:
-  url_noticia = URL_MEDIO[:23] + href
+  url_noticia = href
   renderizar_pagina(url_noticia)
   sesionHTML.loop.run_until_complete(funcionNoticia(url_noticia))
 sesionHTML.close()
