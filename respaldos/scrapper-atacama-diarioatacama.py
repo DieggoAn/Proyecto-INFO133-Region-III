@@ -55,11 +55,11 @@ USER_AGENT_LIST = [
 #= Puede ser un upgrade interesante implementar alguna solucion
 #= Queda en espera hasta afinar detalles
 #=====================[X]LISTA DE NOTICIAS[X]]=====================#
-doc = ["http://www.soychile.cl/copiapo/policial/2022/06/30/764289/detienen-a-mujer-por-crimen.html","http://www.soychile.cl/copiapo/sociedad/2022/06/29/764119/tasa-desempleo-en-atacama.html","http://www.soychile.cl/copiapo/sociedad/2022/06/28/763909/uda-realiza-especializacion-ginecologia.html","http://www.soychile.cl/copiapo/policial/2022/06/26/763729/persona-resulta-herida-a-bala.html","http://www.soychile.cl/copiapo/sociedad/2022/06/25/763638/ceaza-pronostica-lluvias-en-atacama.html","http://www.soychile.cl/copiapo/policial/2022/06/24/763537/formalizan-a-sujeto-por-homicidio.html","http://www.soychile.cl/copiapo/policial/2022/06/23/763412/detienen-a-asaltantes-de-servicentro.html","http://www.soychile.cl/copiapo/sociedad/2022/06/23/763329/huasco-comienza-celebracion-san-pedro.html","http://www.soychile.cl/copiapo/sociedad/2022/06/22/763093/sorpresiva-lluvia-en-copiapo.html","http://www.soychile.cl/copiapo/policial/2022/06/21/763038/recuperan-vehiculo-robado-tierra-amarilla.html","http://www.soychile.cl/copiapo/sociedad/2022/06/21/763034/casos-diarios-covid-atacama.html","http://www.soychile.cl/copiapo/policial/2022/06/21/763033/arresto-de-adolescentes.html","http://www.soychile.cl/copiapo/sociedad/2022/06/19/762752/casos-diarios-covid-atacama.html","http://www.soychile.cl/copiapo/policial/2022/06/19/762748/choque-al-poste-en-huasco.html","http://www.soychile.cl/copiapo/sociedad/2022/06/19/762744/rescate-en-parque-tres-cruces.html","http://www.soychile.cl/copiapo/policial/2022/06/17/762478/adolescente-muerto-en-copiapo.html","http://www.soychile.cl/copiapo/sociedad/2022/06/16/762286/diputada-cid-rechaza-asesinato.html","http://www.soychile.cl/copiapo/policial/2022/06/15/762115/atacama-con-378-casos-covid.html","http://www.soychile.cl/copiapo/policial/2022/06/14/761935/formalizan-a-chofer-accidente-palomar.html","http://www.soychile.cl/copiapo/sociedad/2022/06/28/763906/pescadores-se-toman-ruta.html"]
+doc = ["http://www.soychile.cl/copiapo/policial/2022/06/30/764289/detienen-a-mujer-por-crimen.html","http://www.soychile.cl/copiapo/sociedad/2022/06/29/764119/tasa-desempleo-en-atacama.html","http://www.soychile.cl/copiapo/sociedad/2022/06/28/763909/uda-realiza-especializacion-ginecologia.html","http://www.soychile.cl/copiapo/policial/2022/06/26/763729/persona-resulta-herida-a-bala.html","http://www.soychile.cl/copiapo/sociedad/2022/06/25/763638/ceaza-pronostica-lluvias-en-atacama.html","http://www.soychile.cl/copiapo/policial/2022/06/24/763537/formalizan-a-sujeto-por-homicidio.html","http://www.soychile.cl/copiapo/policial/2022/06/23/763412/detienen-a-asaltantes-de-servicentro.html","http://www.soychile.cl/copiapo/sociedad/2022/06/23/763329/huasco-comienza-celebracion-san-pedro.html","http://www.soychile.cl/copiapo/sociedad/2022/06/22/763093/sorpresiva-lluvia-en-copiapo.html","http://www.soychile.cl/copiapo/policial/2022/06/21/763038/recuperan-vehiculo-robado-tierra-amarilla.html","http://www.soychile.cl/copiapo/sociedad/2022/06/21/763034/casos-diarios-covid-atacama.html","http://www.soychile.cl/copiapo/policial/2022/06/21/763033/arresto-de-adolescentes.html","http://www.soychile.cl/copiapo/sociedad/2022/06/19/762752/casos-diarios-covid-atacama.html","http://www.soychile.cl/copiapo/policial/2022/06/19/762748/choque-al-poste-en-huasco.html","http://www.soychile.cl/copiapo/sociedad/2022/06/19/762744/rescate-en-parque-tres-cruces.html","http://www.soychile.cl/copiapo/policial/2022/06/17/762478/adolescente-muerto-en-copiapo.html","http://www.soychile.cl/copiapo/sociedad/2022/06/16/762286/diputada-cid-rechaza-asesinato.html","http://www.soychile.cl/copiapo/policial/2022/06/15/762115/atacama-con-378-casos-covid.html","http://www.soychile.cl/copiapo/policial/2022/06/14/761935/formalizan-a-chofer-accidente-palomar.html","http://www.soychile.cl/copiapo/sociedad/2022/06/28/763906/pescadores-se-toman-ruta.html"
+]
 
 #= URL a escrapear
-URL = doc[4]
-
+URL = doc[2]
 #=====================[X]CONSTANTES[X]]=====================#
 
 #=====================[O]FUNCIONES DE FORMATO[O]=====================#
@@ -118,8 +118,9 @@ def format_title(raw_title):
 #===========================[O]SCRAP[O]===========================#
 #= #Se optó por hacer las peticiones en la misma funcion "async",
 #= a pesar de no ser necesario el JavaScript con algunos
-#= atributos y no ser la forma mas eficiente.
-#= Aporta un standar seguro con la informacion concentrada
+#= atributos y no ser la forma mas eficiente para aquellas etiquetas
+#= que no son generadas por JS y son directamente accesibles.
+#= Aporta un standar seguro con la informacion completa
 #= y versatilidad a la hora de editar, corregir y manejar el codigo.
 #===========================[X]SCRAP[X]===========================#
 
@@ -129,7 +130,7 @@ async def funcionJs():
   global norm_title
   global norm_text
 
-#= Esperar la respuesta hasta que cargue la etiqueta WAIT seleccionada
+#= Esperar la respuesta hasta que cargue el selector de la constante WAIT
   await response.html.page.waitForSelector(WAIT_DATE)
 
 #= Extraer fecha
@@ -158,7 +159,7 @@ response = session.get(URL,headers=headers)
 response.html.render(sleep=1,keep_page=True)
 
 #=======================================================#
-# Conectarse a MariaDB para guardar los datos escrapeados
+#= Conectarse a MariaDB para guardar los datos escrapeados
 inputUserOn = True
 while inputUserOn:
   in_user = input("Usuario: ")
@@ -174,10 +175,10 @@ while inputUserOn:
   else:
     inputUserOn = False
 
-# Get Cursor
+#= Cursor MariaDB
 cursorObject = dataBase.cursor(buffered=True)
 
-#Ejecutar el Scraping
+#= Ejecutar el Scraping
 try:
   session.loop.run_until_complete(funcionJs())
 finally:
