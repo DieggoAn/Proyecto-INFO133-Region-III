@@ -99,7 +99,7 @@ def scraping_soycopiapo():
     sesionHTML.loop.run_until_complete(funcionNoticia(url_noticia))
   sesionHTML.close()
 
-def scraping_esp():
+def scraping_data():
   global sesionHTML
   dicc_info = {}
   sesionHTML = HTMLSession()
@@ -117,4 +117,5 @@ def scraping_esp():
   sesionHTML.close()
   return dicc_info
 
-scraping_soycopiapo()
+#Esta es la funcion que ejecuta lo pedido
+#scraping_soycopiapo()
