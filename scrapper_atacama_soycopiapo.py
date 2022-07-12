@@ -48,7 +48,7 @@ headers = {'user-agent':random.choice(USER_AGENT_LIST) }
 async def funcionUrls(url_medio):
   global list_href
   list_href = []
-  print("Scrapeando \"", url_medio,"\"")
+  print("Scrapeando Noticias en: \"", url_medio,"\"")
   await respuesta.html.page.waitForSelector(WAIT_URLS)
   page_urls = await respuesta.html.page.xpath(XPATH_URLS)
   for i in range(0,len(page_urls)):
@@ -56,22 +56,22 @@ async def funcionUrls(url_medio):
     if "/copiapo" in text_url:
       list_href.append(text_url)
   await respuesta.html.page.close()
-  print(list_href)
+  print("Listo...")
 
 async def funcionNoticia(url_noticia):
+  global text_fecha
+  global text_title
+  global text_text
   print("Scrapeando \"", url_noticia,"\"")
   await respuesta.html.page.waitForSelector(WAIT_DATE)
   page_fecha = await respuesta.html.page.xpath(XPATH_DATE)
   text_fecha = await respuesta.html.page.evaluate('(e) => e.textContent', page_fecha[0])
-  print(text_fecha)
   page_title = await respuesta.html.page.xpath(XPATH_TITLE)
   text_title = await respuesta.html.page.evaluate('(e) => e.textContent', page_title[0])
-  print(text_title)
   page_text = await respuesta.html.page.xpath(XPATH_TEXT)
   text_text = await respuesta.html.page.evaluate('(e) => e.textContent', page_text[0])
-  print(text_text)
-  print()
   await respuesta.html.page.close()
+  print("Listo...")
 
 def renderizar_pagina(url_pagina):
   global respuesta
@@ -88,11 +88,33 @@ def renderizar_pagina(url_pagina):
       intentos = 1
     intentos -= 1
 
-sesionHTML = HTMLSession()
-renderizar_pagina(URL_MEDIO)
-sesionHTML.loop.run_until_complete(funcionUrls(URL_MEDIO))
-for href in list_href:
-  url_noticia = URL_MEDIO[:23] + href
-  renderizar_pagina(url_noticia)
-  sesionHTML.loop.run_until_complete(funcionNoticia(url_noticia))
-sesionHTML.close()
+def scraping_soycopiapo():
+  global sesionHTML
+  sesionHTML = HTMLSession()
+  renderizar_pagina(URL_MEDIO)
+  sesionHTML.loop.run_until_complete(funcionUrls(URL_MEDIO))
+  for href in list_href:
+    url_noticia = URL_MEDIO[:23] + href
+    renderizar_pagina(url_noticia)
+    sesionHTML.loop.run_until_complete(funcionNoticia(url_noticia))
+  sesionHTML.close()
+
+def scraping_esp():
+  global sesionHTML
+  dicc_info = {}
+  sesionHTML = HTMLSession()
+  renderizar_pagina(URL_MEDIO)
+  sesionHTML.loop.run_until_complete(funcionUrls(URL_MEDIO))
+  c = 0
+  for href in list_href:
+    url_noticia = URL_MEDIO[:23] + href
+    renderizar_pagina(url_noticia)
+    sesionHTML.loop.run_until_complete(funcionNoticia(url_noticia))
+    dicc_info["Obj" + str(c)] = {"text":text_text,"title":text_title,"date":text_fecha}
+    c += 1
+    if c == 2:
+      break
+  sesionHTML.close()
+  return dicc_info
+
+scraping_soycopiapo()
