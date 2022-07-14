@@ -11,7 +11,7 @@ def format_date(date):
 session = HTMLSession()
 
 ## URL "SEED" que escrapear
-URL_SEED = "https://www.redatacama.com"
+URL_SEED = "https://www.maray.cl/category/atacama/"
 
 ## Simular que estamos utilizando un navegador web
 USER_AGENT_LIST = [
@@ -40,22 +40,22 @@ response = session.get(URL_SEED,headers=headers)
 
 ## Analizar ("to parse") el contenido
 
-xpath_url="//article//h3/a/@href"
-xpath_date="//li[@class='main_fecha']"
-xpath_text="//div[@class='CUERPO']//p"
+xpath_url="//ul[@class='mvp-blog-story-list left relative infinite-content']//li/a/@href"
+xpath_date="//span [@class='mvp-post-date updated']//time/@datetime"
+xpath_text="//div[@id='mvp-content-main']//p"
 
 all_urls = response.html.xpath(xpath_url)
 
 
 for url in all_urls:
-        article_url = "https://www.redatacama.com" + url
+        article_url = "" + url
 
         headers = {'user-agent':random.choice(USER_AGENT_LIST) }
         response = session.get(article_url,headers=headers)
         title = response.html.xpath('//div//h1')[0].text
 
-        date = find_date(article_url)
-        ##date = response.html.xpath(xpath_date)[0]
+        ##date = find_date(article_url)
+        date = response.html.xpath(xpath_date)[0]
 
         list_p = response.html.xpath(xpath_text)
 
@@ -73,4 +73,3 @@ for url in all_urls:
         print(date)
         print(text)
         print()
-
