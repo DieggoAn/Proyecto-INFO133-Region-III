@@ -1,6 +1,3 @@
-from cgitb import text
-from hashlib import new
-from time import sleep
 import random
 from requests import head, session
 from requests_html import HTMLSession
@@ -40,7 +37,7 @@ articles = r.html.find('article')
 
 newslist = []
 
-##Por modificar
+##Por modificar para agregar mas parrafos a textoNews
 
 def noticiaText(direccion, agente):
     session2 = HTMLSession()
@@ -54,7 +51,6 @@ def noticiaText(direccion, agente):
             return textoNews
         except:
             pass
-
 
 for item in articles: 
     try:
@@ -71,20 +67,20 @@ for item in articles:
     except:
         pass
 
-print("------------NOTICIAS DE PAGINA 1--------------------------")
 newslistNoticias = []
 c = 1
 for i in newslist:
     
     print("-------------NOTICIA-Numero",c,"---------------------")
-    print("-----------------PORTADA----------------------------")
+    print("                 URL")
+    print(''.join(i[1]))
+    print("                 PORTADA")
     print(''.join(i[0]))
-    print("-----------------FECHA----------------------------")
+    print("                 FECHA")
     print(''.join(i[2]))
-    print("------------------TEXTO----------------------------")
+    print("                 TEXTO")
     noticia = noticiaText(','.join(i[1]), USER_AGENT_LIST)
     print(noticia)
-    print("------------------------------------------------------")
     print(" ")
     c+=1
 

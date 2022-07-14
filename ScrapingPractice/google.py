@@ -5,8 +5,6 @@
 # Entonces tenemos que usar la libreria para cargar y extraer los datos
 # 3) Tener Ojo con el formato de la fecha (no todas las paginas tienen mismo formato ) 
 
-from os import link
-from time import sleep
 from requests import session
 from requests_html import HTMLSession
 
