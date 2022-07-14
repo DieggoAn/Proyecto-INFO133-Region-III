@@ -34,8 +34,10 @@ r = session.get(url,headers=headers)
 
 articles = r.html.find('article')
 
-
-newslist = []
+##Listas con data
+newslist            = []        # Contiene ->   Title , link , fecha
+newslistNoticias    = []        # contiene ->   Texto (del link superior)
+dataForDB           = []
 
 ##Por modificar para agregar mas parrafos a textoNews
 
@@ -52,38 +54,70 @@ def noticiaText(direccion, agente):
         except:
             pass
 
-for item in articles: 
-    try:
-        newsitem = item.find('h2', first=True) 
-        title   = newsitem.text
-        link    = newsitem.absolute_links
-        newstime = item.find('time', first=True)
-        fecha    = newstime.text
-        """
-        noticia = noticiaText(link, USER_AGENT_LIST)
-        print(noticia)
-        """
-        newslist.append(tuple((title, link, fecha   )))
-    except:
-        pass
 
-newslistNoticias = []
-c = 1
-for i in newslist:
-    
-    print("-------------NOTICIA-Numero",c,"---------------------")
-    print("                 URL")
-    print(''.join(i[1]))
-    print("                 PORTADA")
-    print(''.join(i[0]))
-    print("                 FECHA")
-    print(''.join(i[2]))
-    print("                 TEXTO")
-    noticia = noticiaText(','.join(i[1]), USER_AGENT_LIST)
-    print(noticia)
-    print(" ")
-    c+=1
+def noticiaText(direccion, agente):
+    session2 = HTMLSession()
+    headers = {'user-agent':random.choice(agente) }
+    r2 = session2.get(direccion,headers=headers)
 
+
+    selector = '.entry-content'
+    ubicacion = r2.html.find(selector)
+    segmentNew = []
+
+    for item in ubicacion:
+        newsitem = item.find('p') 
+
+    for i in newsitem:
+        segmentNew.append(i.text)
+    allNew = '\n'.join(segmentNew)  
+
+    return allNew
+
+def searchItem():
+    for item in articles: 
+        try:
+            newsitem = item.find('h2', first=True) 
+            title   = newsitem.text
+            link    = newsitem.absolute_links
+            newstime = item.find('time', first=True)
+            fecha    = newstime.text
+            """
+            noticia = noticiaText(link, USER_AGENT_LIST)
+            print(noticia)
+            """
+            dataForDB.append(list((title, link, fecha )))
+        except:
+            pass
+    return dataForDB
+
+## IMPRIME LAS NOTICIAS
+def printNews(dataForDB,indice):
+    for i in dataForDB:
+        print("-------------NOTICIA-Numero",indice,"---------------------")
+        print("                 URL")
+        print(''.join(i[1]),"")
+        print("                 PORTADA")
+        print(''.join(i[0]),"")
+        print("                 FECHA")
+        print(''.join(i[2]),"")
+        print("                 TEXTO")
+        noticia = noticiaText(','.join(i[1]), USER_AGENT_LIST)
+        print(noticia , "")
+        indice+=1
+
+def formatDB(dataForDB):
+    for i in dataForDB:
+        noticia = noticiaText(','.join(i[1]), USER_AGENT_LIST)
+        i.append(noticia)
+    return dataForDB
+
+
+#searchItem()
+#printNews(newslist,1)
+
+
+#Tareas por realizar
 #Inserta datos a la base de datos
 # Importar base de datos main    -> CreateDB
 #                                -> Insertar medio Chanarcillo
