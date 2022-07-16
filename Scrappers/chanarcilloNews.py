@@ -10,7 +10,8 @@ def formatoDate(dateRaw):
 # PRIMERA FUNCION, Busca Los h2 , link , fecha
 #Retorna una tupla con los LINK, titulos y fecha en la Lista listRaw
 def searchItem():
-
+    global session
+    global headers
     #= Solicitar estructura web
     headers = {'user-agent':randAgent }
     session = HTMLSession()
@@ -22,24 +23,23 @@ def searchItem():
     articles = r.html.find('article')
 
     listRaw   = []
-    for item in articles: 
+    for item in articles:
         try:
             newsitem = item.find('h2', first=True) 
             title   = newsitem.text
             link    = newsitem.absolute_links
+            formato = ",".join(link)
+            noticia = noticiaText(formato)
             newstime = item.find('time', first=True)
             fecha    = formatoDate(newstime.text)
-            listRaw.append(tuple((link, title, fecha )))
-        except:
-            pass
+            listRaw.append(tuple((link, title, fecha, noticia)))
+        except Exception as e:
+            print("Error:", e)
     return listRaw
 
 #Funcion que Rescata toda la noticia y la retorna en formato str
 def noticiaText(direccion):
-    session2 = HTMLSession()
-    headers = {'user-agent':randAgent}
-    r2 = session2.get(direccion,headers=headers)
-
+    r2 = session.get(direccion,headers=headers)
     selector = '.entry-content'
     ubicacion = r2.html.find(selector)
     segmentNew = []
@@ -48,7 +48,7 @@ def noticiaText(direccion):
             newsitem = item.find('p') 
         for i in newsitem:
             segmentNew.append(i.text)
-    except:
+    except Exception as e:
         pass
     allNew = '\n'.join(segmentNew)  
     return allNew
@@ -72,6 +72,7 @@ def createTupleForDB(dataWithLink,dataWithNew):
         numNew+= 1
     
     return dataForDB
+
 def formatDB():
     links    = searchItem()                 
     news    = listDataNews(links)           
@@ -79,18 +80,18 @@ def formatDB():
     return dataForDB
 
 def main():
-    links    = searchItem()                 #Recolecta los link
-    news    = listDataNews(links)           #con los link recolecta las noticias
-    dataForDB = createTupleForDB(links,news)#Une todo en una lista de tupla en formato:
-                                            #(link, title,texto,fecha ) listo para ingresar DB
-    links.clear()
-    news.clear()
+    links    = searchItem()                  #Recolecta los link
+    #news    = listDataNews(links)           #con los link recolecta las noticias
+    #dataForDB = createTupleForDB(links) #Une todo en una lista de tupla en formato:
+                                             #(link, title,texto,fecha ) listo para ingresar DB
+    #links.clear()
+    #news.clear()
 
     ##----------------------IMPRIME EN CONSOLA -> LAS NOTICIAS <- -------------------
     c=0
-    for i in dataForDB:
+    for i in links:
         c+=1
         print("----------------->",c,"<-------------------------")
         print(i,"")
     ##------------------------- FIN CODIGO ------------------------
-main()
+#main()
