@@ -1,18 +1,17 @@
 import spacy
-import scrapper_atacama_soycopiapo as soycopiapo
+import scrappers.atacama_soycopiapo as soycopiapo
 nlp = spacy.load("es_core_news_md")
 
-dicc_info = soycopiapo.scraping_data()
+textos = soycopiapo.scrap_text()
 
 def menciones_soycopiapo():
     list_men = []
-    for i in dicc_info.keys():
-        text = dicc_info[i]["text"]
-        doc = nlp(text)
+    for texto in textos:
+        doc = nlp(texto)
         for ent in doc.ents:
             if ((ent.label_ == "PER") and (" " in ent.text)):
                 list_men.append(ent.text)
     return list_men
+    
 
-#Esta es la funcion que ejecuta lo pedido
-#print(menciones_soycopiapo())
+print(menciones_soycopiapo())
