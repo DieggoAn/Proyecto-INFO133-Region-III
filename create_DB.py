@@ -103,3 +103,16 @@ cursorObject.execute(Menciona)
 cursorObject.execute(Tiene)
 
 # cursorObject.execute("SHOW DATABASES")
+
+
+## Aca se llena informacion sobre los Medios de prensa seleccionados y informacion acerca de los dueños ##
+maray = "INSERT IGNORE INTO MEDIO (URL_MEDIO, NOMBRE, PAIS, IDIOMA, REGION, FECHA_CRE) VALUES ('www.maray.cl','Radio Maray','Chile','Español',3,NULL);"
+radioGennesis = "INSERT IGNORE INTO MEDIO (URL_MEDIO, NOMBRE, PAIS, IDIOMA, REGION, FECHA_CRE) VALUES ('https://www.radiogennesis.cl','Radio Gennesis','Chile','Español',3,NULL);"
+redAtacama = "INSERT IGNORE INTO MEDIO (URL_MEDIO, NOMBRE, PAIS, IDIOMA, REGION, FECHA_CRE) VALUES ('https://www.redatacama.com','Red Atacama', 'Chile','Español',3,NULL);"
+chanarcillo = "INSERT IGNORE INTO MEDIO (URL_MEDIO, NOMBRE, PAIS, IDIOMA, REGION, FECHA_CRE) VALUES ('https://www.chanarcillo.cl','Diario Chañarcillo', 'Chile','Español',3,NULL);"
+
+
+cursorObject.execute(maray)
+cursorObject.execute(radioGennesis)
+cursorObject.execute(redAtacama)
+cursorObject.execute(chanarcillo)
