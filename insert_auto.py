@@ -1,5 +1,5 @@
 from typing import TextIO
-import Scrappers.chanarcilloNews  #Cuando se ejecuta main.py , ejecuta Scrappers.chanarcilloNews.py
+import scrappers.chanarcilloNews  #Cuando se ejecuta main.py , ejecuta scrappers.chanarcilloNews.py
 import mysql.connector
 #Formato para la fecha / insertRow-insertManyRow
 """
@@ -8,7 +8,7 @@ https://www.youtube.com/watch?v=ju-toIbHk_4
 https://www.w3schools.com/python/python_mysql_insert.asp
 """
 
-dataChanarcillo = Scrappers.chanarcilloNews.formatDB()
+dataChanarcillo = scrappers.chanarcilloNews.formatDB()
 
 #=======================================================#
 ### Connect to MariaDB Platform
