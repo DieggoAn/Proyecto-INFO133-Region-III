@@ -1,5 +1,5 @@
 from typing import TextIO
-#import chanarcilloNews  #Cuando se ejecuta main.py , ejecuta chanarcilloNews.py
+import chanarcilloNews  #Cuando se ejecuta main.py , ejecuta chanarcilloNews.py
 import mysql.connector
 #Formato para la fecha / insertRow-insertManyRow
 """
@@ -7,10 +7,8 @@ https://codigolinea.com/insertando-fechas-con-diferente-formato-en-mysql/
 https://www.youtube.com/watch?v=ju-toIbHk_4
 https://www.w3schools.com/python/python_mysql_insert.asp
 """
-#newsChanarcillo = searchItem()
-#dataChanarcillo = chanarcilloNews.formatDB(newslist)
-#for i in newsChanarcillo:
-#    print(i,"")
+
+dataChanarcillo = chanarcilloNews.formatDB()
 
 #=======================================================#
 ### Connect to MariaDB Platform
@@ -33,7 +31,7 @@ while inputUserOn:
   else:
     inputUserOn = False
 #
-#"""       Formato de ingreso para InsertRow
+"""       Formato de ingreso para InsertRow
   url   = 'https://www.chanarcillo.cl/instituto-de-investigacion-de-ciencias-sociales-y-educacion-de-la-universidad-de-atacama-culmina-ciclo-de-seminarios/'
   titulo= 'Instituto de Investigación de Ciencias Sociales y Educación de la Universidad de Atacama culmina ciclo de seminarios'
   fecha = '2022-07-13'
@@ -42,9 +40,7 @@ while inputUserOn:
 val = (url, titulo, Texto,fecha)
 #InsertRow(val)
 
-#"""
-
-
+"""
 
 ##----------------------INICIO ---Funciones ----------------
 def commit(cursor):    ## make the changes
@@ -61,19 +57,33 @@ def InsertRow(row): #Insertar 1 filas
       print(f"Error: {e}")
   commit(cursor)
 #
-def InsertManyRow(streamersList): #Insertar multiples-filas en formato lista de *(tupla,)*    
+def InsertManyRow(dataInsert): #Insertar multiples-filas en formato lista de *(tupla,)*    
   cursor = mydb.cursor()
   try: 
-      sql = f"INSERT INTO NOTICIA (URL_NOTICIA, TITULO, TEXTO, FECHA_PUB) VALUES (?, ?, ?, ?)"
-      cursor.executemany(sql, streamersList)
+    sql = "INSERT INTO NOTICIA (URL_NOTICIA, TITULO, TEXTO, FECHA_PUB) VALUES (%s, %s, %s, %s)"
+    cursor.executemany(sql, dataInsert)
   except mysql.Error as e: 
-      print(f"Error: {e}")
+    print(f"Error: {e}")
   commit(cursor)
 
 #
 ##--------------------FIN DE Funciones -------------------
-
+val = [
+  ('Peter', 'Lowstreet 4',      'Lowstreet 4', '2022-07-13'),
+  ('Amy', 'Apple st 652',       'Lowstreet 4', '2022-07-13'),
+  ('Hannah', 'Mountain 21',     'Lowstreet 4', '2022-07-13'),
+  ('Michael', 'Valley 345',     'Lowstreet 4', '2022-07-13'),
+  ('Sandy', 'Ocean blvd 2',     'Lowstreet 4', '2022-07-13'),
+  ('Betty', 'Green Grass 1',    'Lowstreet 4', '2022-07-13'),
+  ('Richard', 'Sky st 331',    'Lowstreet 4', '2022-07-13'),
+  ('Susan', 'One way 98',       'Lowstreet 4', '2022-07-13'),
+  ('Vicky', 'Yellow Garden 2',  'Lowstreet 4', '2022-07-13'),
+  ('Ben', 'Park Lane 38',       'Lowstreet 4', '2022-07-13'),
+  ('William', 'Central st 954', 'Lowstreet 4', '2022-07-13'),
+  ('Chuck', 'Main Road 989',    'Lowstreet 4', '2022-07-13'),
+  ('Viola', 'Sideway 1633',     'Lowstreet 4', '2022-07-13')
+]
 ##--------------------ejecutar Funciones-------------------
-
-InsertRow(val)
+#InsertManyRow(val)             ##Test Formato y insertar multiples funciones
+InsertManyRow(dataChanarcillo)
 

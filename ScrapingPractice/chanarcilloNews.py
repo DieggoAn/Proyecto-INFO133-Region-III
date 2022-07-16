@@ -1,10 +1,11 @@
-from dataclasses import dataclass
 from requests_html import HTMLSession
-from requests import session
 from AGENT import USER_AGENT
-import random
+import dateutil.parser as parser
 
 randAgent = USER_AGENT()
+def formatoDate(dateRaw):
+    date =  parser.parse(dateRaw)
+    return date.isoformat()
 
 # PRIMERA FUNCION, Busca Los h2 , link , fecha
 #Retorna una tupla con los LINK, titulos y fecha en la Lista listRaw
@@ -27,11 +28,7 @@ def searchItem():
             title   = newsitem.text
             link    = newsitem.absolute_links
             newstime = item.find('time', first=True)
-            fecha    = newstime.text
-            """
-            Funcion para transformar fecha a formato YYYY-DD-MM
-            """
-
+            fecha    = formatoDate(newstime.text)
             listRaw.append(tuple((link, title, fecha )))
         except:
             pass
@@ -69,13 +66,17 @@ def listDataNews(dataWithLink):
 def createTupleForDB(dataWithLink,dataWithNew):
     numNew = 0
     dataForDB = []
-
     for i in dataWithLink:
-        dataForDB.append(tuple((i[0],i[1],dataWithNew[numNew],i[2])))
+        formato = ",".join(i[0])
+        dataForDB.append(tuple((formato,i[1],dataWithNew[numNew],i[2])))
         numNew+= 1
     
     return dataForDB
-
+def formatDB():
+    links    = searchItem()                 
+    news    = listDataNews(links)           
+    dataForDB = createTupleForDB(links,news)
+    return dataForDB
 
 def main():
     links    = searchItem()                 #Recolecta los link
@@ -92,5 +93,4 @@ def main():
         print("----------------->",c,"<-------------------------")
         print(i,"")
     ##------------------------- FIN CODIGO ------------------------
-
-main()
+#main()
