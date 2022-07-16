@@ -1,80 +1,26 @@
-import random
-from requests import head, session
+from dataclasses import dataclass
 from requests_html import HTMLSession
+from requests import session
+from AGENT import USER_AGENT
+import random
 
-#= Agentes de usuario para ingresar a una pagina sin ser identificado como un bot
-USER_AGENT_LIST = [
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
-        "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",
-        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/19.77.34.5 Safari/537.1",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",
-        "Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.36 Safari/536.5",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
-        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
-]
+randAgent = USER_AGENT()
 
-#= Solicitar estructura web
-headers = {'user-agent':random.choice(USER_AGENT_LIST) }
-session = HTMLSession()
-
-url = 'https://www.chanarcillo.cl/category/region-actualidad/'
-
-r = session.get(url,headers=headers)
-
-articles = r.html.find('article')
-
-##Listas con data
-newslist            = []        # Contiene ->   Title , link , fecha
-newslistNoticias    = []        # contiene ->   Texto (del link superior)
-dataForDB           = []
-
-##Por modificar para agregar mas parrafos a textoNews
-
-def noticiaText(direccion, agente):
-    session2 = HTMLSession()
-    headers = {'user-agent':random.choice(agente) }
-    r2 = session2.get(direccion,headers=headers)
-    articles = r2.html.find('article')
-    for items in articles:
-        try:
-            newsitem = items.find('p', first=True) 
-            textoNews   = newsitem.text
-            return textoNews
-        except:
-            pass
-
-
-def noticiaText(direccion, agente):
-    session2 = HTMLSession()
-    headers = {'user-agent':random.choice(agente) }
-    r2 = session2.get(direccion,headers=headers)
-
-
-    selector = '.entry-content'
-    ubicacion = r2.html.find(selector)
-    segmentNew = []
-
-    for item in ubicacion:
-        newsitem = item.find('p') 
-
-    for i in newsitem:
-        segmentNew.append(i.text)
-    allNew = '\n'.join(segmentNew)  
-
-    return allNew
-
+# PRIMERA FUNCION, Busca Los h2 , link , fecha
+#Retorna una tupla con los LINK, titulos y fecha en la Lista listRaw
 def searchItem():
+
+    #= Solicitar estructura web
+    headers = {'user-agent':randAgent }
+    session = HTMLSession()
+    numPag = 2
+    #url = 'https://www.chanarcillo.cl/category/region-actualidad/page/1/'
+    url = 'https://www.chanarcillo.cl/category/region-actualidad/page/'+str(numPag)+'/'
+
+    r = session.get(url,headers=headers)
+    articles = r.html.find('article')
+
+    listRaw   = []
     for item in articles: 
         try:
             newsitem = item.find('h2', first=True) 
@@ -83,43 +29,68 @@ def searchItem():
             newstime = item.find('time', first=True)
             fecha    = newstime.text
             """
-            noticia = noticiaText(link, USER_AGENT_LIST)
-            print(noticia)
+            Funcion para transformar fecha a formato YYYY-DD-MM
             """
-            dataForDB.append(list((title, link, fecha )))
+
+            listRaw.append(tuple((link, title, fecha )))
         except:
             pass
+    return listRaw
+
+#Funcion que Rescata toda la noticia y la retorna en formato str
+def noticiaText(direccion):
+    session2 = HTMLSession()
+    headers = {'user-agent':randAgent}
+    r2 = session2.get(direccion,headers=headers)
+
+    selector = '.entry-content'
+    ubicacion = r2.html.find(selector)
+    segmentNew = []
+    try:
+        for item in ubicacion:
+            newsitem = item.find('p') 
+        for i in newsitem:
+            segmentNew.append(i.text)
+    except:
+        pass
+    allNew = '\n'.join(segmentNew)  
+    return allNew
+
+##Funcion que agrega la noticia a la Lista de Url, title, date
+## Funcion que por el link toma la noticia y la guarda en la lista Noticia
+
+def listDataNews(dataWithLink):
+    dataWithNew = []
+    for i in dataWithLink:
+        aux = noticiaText(','.join(i[0]))
+        dataWithNew.append(aux)
+    return dataWithNew
+
+def createTupleForDB(dataWithLink,dataWithNew):
+    numNew = 0
+    dataForDB = []
+
+    for i in dataWithLink:
+        dataForDB.append(tuple((i[0],i[1],dataWithNew[numNew],i[2])))
+        numNew+= 1
+    
     return dataForDB
 
-## IMPRIME LAS NOTICIAS
-def printNews(dataForDB,indice):
+
+def main():
+    links    = searchItem()                 #Recolecta los link
+    news    = listDataNews(links)           #con los link recolecta las noticias
+    dataForDB = createTupleForDB(links,news)#Une todo en una lista de tupla en formato:
+                                            #(link, title,texto,fecha ) listo para ingresar DB
+    links.clear()
+    news.clear()
+
+    ##----------------------IMPRIME EN CONSOLA -> LAS NOTICIAS <- -------------------
+    c=0
     for i in dataForDB:
-        print("-------------NOTICIA-Numero",indice,"---------------------")
-        print("                 URL")
-        print(''.join(i[1]),"")
-        print("                 PORTADA")
-        print(''.join(i[0]),"")
-        print("                 FECHA")
-        print(''.join(i[2]),"")
-        print("                 TEXTO")
-        noticia = noticiaText(','.join(i[1]), USER_AGENT_LIST)
-        print(noticia , "")
-        indice+=1
+        c+=1
+        print("----------------->",c,"<-------------------------")
+        print(i,"")
+    ##------------------------- FIN CODIGO ------------------------
 
-def formatDB(dataForDB):
-    for i in dataForDB:
-        noticia = noticiaText(','.join(i[1]), USER_AGENT_LIST)
-        i.append(noticia)
-    return dataForDB
-
-
-#searchItem()
-#printNews(newslist,1)
-
-
-#Tareas por realizar
-#Inserta datos a la base de datos
-# Importar base de datos main    -> CreateDB
-#                                -> Insertar medio Chanarcillo
-#                                -> Insertar Medio Soychile
-#                                -> SELECT ... FROM ....
+main()
