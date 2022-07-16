@@ -1,14 +1,8 @@
 from typing import TextIO
 import chanarcilloNews  #Cuando se ejecuta main.py , ejecuta .chanarcilloNews.py
 import mysql.connector
-#Formato para la fecha / insertRow-insertManyRow
-"""
-https://codigolinea.com/insertando-fechas-con-diferente-formato-en-mysql/
-https://www.youtube.com/watch?v=ju-toIbHk_4
-https://www.w3schools.com/python/python_mysql_insert.asp
-"""
 
-dataChanarcillo = chanarcilloNews.formatDB()
+dataChanarcillo = chanarcilloNews.searchItem()
 
 #=======================================================#
 ### Connect to MariaDB Platform
@@ -30,17 +24,6 @@ while inputUserOn:
     print("Hubo un error en la conexion a MariaDB:  ", e)
   else:
     inputUserOn = False
-#
-"""       Formato de ingreso para InsertRow
-  url   = 'https://www.chanarcillo.cl/instituto-de-investigacion-de-ciencias-sociales-y-educacion-de-la-universidad-de-atacama-culmina-ciclo-de-seminarios/'
-  titulo= 'Instituto de Investigación de Ciencias Sociales y Educación de la Universidad de Atacama culmina ciclo de seminarios'
-  fecha = '2022-07-13'
-  Texto = 'Esto sera un exito txt '
-
-val = (url, titulo, Texto,fecha)
-#InsertRow(val)
-
-"""
 
 ##----------------------INICIO ---Funciones ----------------
 def commit(cursor):    ## make the changes
@@ -68,22 +51,9 @@ def InsertManyRow(dataInsert): #Insertar multiples-filas en formato lista de *(t
 
 #
 ##--------------------FIN DE Funciones -------------------
-val = [
-  ('Peter', 'Lowstreet 4',      'Lowstreet 4', '2022-07-13'),
-  ('Amy', 'Apple st 652',       'Lowstreet 4', '2022-07-13'),
-  ('Hannah', 'Mountain 21',     'Lowstreet 4', '2022-07-13'),
-  ('Michael', 'Valley 345',     'Lowstreet 4', '2022-07-13'),
-  ('Sandy', 'Ocean blvd 2',     'Lowstreet 4', '2022-07-13'),
-  ('Betty', 'Green Grass 1',    'Lowstreet 4', '2022-07-13'),
-  ('Richard', 'Sky st 331',    'Lowstreet 4', '2022-07-13'),
-  ('Susan', 'One way 98',       'Lowstreet 4', '2022-07-13'),
-  ('Vicky', 'Yellow Garden 2',  'Lowstreet 4', '2022-07-13'),
-  ('Ben', 'Park Lane 38',       'Lowstreet 4', '2022-07-13'),
-  ('William', 'Central st 954', 'Lowstreet 4', '2022-07-13'),
-  ('Chuck', 'Main Road 989',    'Lowstreet 4', '2022-07-13'),
-  ('Viola', 'Sideway 1633',     'Lowstreet 4', '2022-07-13')
-]
-##--------------------ejecutar Funciones-------------------
-#InsertManyRow(val)             ##Test Formato y insertar multiples funciones
+
+##------------------INICIO--Ejecutar Funciones-------------------
+
+#InsertRow(test)            #Inserta 1 filas
 InsertManyRow(dataChanarcillo)
 
