@@ -102,4 +102,31 @@ cursorObject.execute(Adquiere)
 cursorObject.execute(Menciona)
 cursorObject.execute(Tiene)
 
-# cursorObject.execute("SHOW DATABASES")
+def commit(cursor):    ## make the changes
+  dataBase.commit()
+  print(f"Last Inserted ID: {cursor.lastrowid}")
+  dataBase.close()
+#
+def InsertManyRow(dataInsert): #Insertar multiples-filas en formato lista de *(tupla,)*    
+  cursor = dataBase.cursor()
+  try: 
+    sql = "INSERT INTO MEDIO (URL_MEDIO, NOMBRE, PAIS, IDIOMA, REGION, FECHA_CRE) VALUES (%s, %s, %s, %s, %s, %s)"
+    cursor.executemany(sql, dataInsert)
+  except Exception as e: 
+    print(f"Error: {e}")
+  commit(cursor)
+
+#
+##--------------------FIN DE Funciones -------------------
+val = [
+  ('https://www.redatacama.com/', 'Red Atacama', 'Chile','Español',3,'1999-08-10'),
+  ('https://www.radiogennesis.cl/', 'Radio Gennesis', 'Chile','Español',3,'1998-08-03'),
+  ('https://www.elquehaydecierto.cl/', 'Que Hay de Cierto', 'Chile','Español',3,'1973-09-11'),
+  ('https://www.digitalfm.cl/', 'Radio Digital FM', 'Chile','Español',3,'1962-04-27'),
+  ('https://www.chanarcillo.cl/', 'Diario Chañarcillo', 'Chile','Español',3,'1988-02-10'),
+  ('https://www.soychile.cl/copiapo/', 'Soy Copiapo', 'Chile','Español',3,'2005-11-09'), 
+  #('https://www.redatacama.com/', 'Red Atacama', 'Chile','Español',3,'2011-10-25'),
+  #('https://www.redatacama.com/', 'Red Atacama', 'Chile','Español',3,'1873-01-18'),
+]
+
+InsertManyRow(val) 
