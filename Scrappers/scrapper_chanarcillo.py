@@ -1,27 +1,29 @@
 from requests_html import HTMLSession
 from AGENT import USER_AGENT
 import dateutil.parser as parser
-
+##
+global session
+global headers
 randAgent = USER_AGENT()
+#= Solicitar estructura web
+headers = {'user-agent':randAgent }
+session = HTMLSession()
+##
+
 def formatoDate(dateRaw):
     date =  parser.parse(dateRaw)
     return date.isoformat()
 
-# PRIMERA FUNCION, Busca Los h2 , link , fecha
-#Retorna una tupla con los LINK, titulos y fecha en la Lista listRaw
+
+#Retorna una tupla con los LINK, titulos texto y fecha en la Lista formatForDB
 def searchItem():
-    global session
-    global headers
-    #= Solicitar estructura web
-    headers = {'user-agent':randAgent }
-    session = HTMLSession()
     numPag = 1
     url = 'https://www.chanarcillo.cl/category/region-actualidad/page/'+str(numPag)+'/'
 
     r = session.get(url,headers=headers)
     articles = r.html.find('article')
 
-    listRaw   = []
+    formatForDB   = []
     for item in articles:
         try:
             newsitem = item.find('h2', first=True) 
@@ -31,10 +33,10 @@ def searchItem():
             noticia = noticiaText(formatLink)
             newstime = item.find('time', first=True)
             fecha    = formatoDate(newstime.text)
-            listRaw.append(tuple((formatLink, title, noticia, fecha)))
+            formatForDB.append(tuple((formatLink, title, noticia, fecha)))
         except Exception as e:
             print("Error:", e)
-    return listRaw
+    return formatForDB
 
 #Funcion que Rescata toda la noticia y la retorna en formato str
 def noticiaText(direccion):
@@ -54,13 +56,13 @@ def noticiaText(direccion):
 
 
 def main():
-    links    = searchItem()                  #Recolecta los link con su (titulos, texto, fecha)
+    formatForDB    = searchItem()                  #Recolecta los link con su (titulos, texto, fecha)
     ##----------------------IMPRIME EN CONSOLA -> LAS NOTICIAS <- -------------------
     c=0
-    for i in links:
+    for i in formatForDB:
         c+=1
         print("----------------->",c,"<-------------------------")
         print(i,"")
-    ##------------------------- FIN CODIGO ------------------------
+    ##----------------------
 #
 main()
