@@ -1,8 +1,8 @@
 from typing import TextIO
-import chanarcilloNews  #Cuando se ejecuta main.py , ejecuta .chanarcilloNews.py
+import chanarcillo_atacama  #Cuando se ejecuta main.py , ejecuta .chanarcilloNews.py
 import mysql.connector
 
-dataChanarcillo = chanarcilloNews.searchItem()
+dataChanarcillo = chanarcillo_atacama.searchItem()
 
 #=======================================================#
 ### Connect to MariaDB Platform
