@@ -35,7 +35,8 @@ def searchItem():
             formatLink = ",".join(link)
             noticia = noticiaText(formatLink)
             newstime = item.find('time', first=True)
-            #fecha    = formatoDate(newstime.text)
+            #fecha    = formatoDate(newstime.text)w
+            #FALTA FORMATEAR LA FECHA <-------------------------------------------------------------------------------------------------------
             listRaw.append(tuple((formatLink, title,noticia, fecha )))
         except Exception as e:
             print("Error:", e)
@@ -63,33 +64,3 @@ dataa = searchItem()
 for i in dataa:
     print(i)
     print("")
-
- 
-"""
-headers = {'user-agent':randAgent }
-session = HTMLSession()
-
-url = 'https://www.nostalgica.cl/atacama/'
-
-r = session.get(url,headers=headers)
-
-r.html.render(sleep=1, scrolldown=5)
-
-articles = r.html.find('article')
-newslist = []
-
-for item in articles: 
-    try:
-        newsitem = item.find('h2', first=True) #Primeros filtros
-
-        title = newsitem.text,
-        link  = newsitem.absolute_links
-        newstime = item.find('time', first=True)
-        fecha = newstime.text
-        formatLink = ",".join(link)
-
-    
-        print(formatLink, title,fecha)
-    except:
-        pass
-"""
