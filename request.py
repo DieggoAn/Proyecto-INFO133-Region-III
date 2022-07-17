@@ -15,17 +15,18 @@ dataBase = mysql.connector.connect(
 cursorObject = dataBase.cursor(buffered=True)
 
 ##contador noticias por medio
-##select URL_MEDIO, count(URL_MEDIO) from noticia group by URL_MEDIO; 
+cursorObject.execute("SELECT URL_MEDIO, count(URL_MEDIO) from noticia group by URL_MEDIO;") 
+print("Cuantas noticias ha publicado cada medio: ")
+print(str(cursorObject.fetchall()))
+print()
 
 ##Persona mencionada en una noticia en un dia especifico //Modificar valor de FECHA_PUB
-##SELECT NOMBRE, FECHA_PUB FROM persona p 
-#JOIN menciona m ON p.ID_PERSONA = m.ID_PERSONA 
-#JOIN noticia n ON m.URL_NOTICIA = n.URL_NOTICIA
-#WHERE FECHA_PUB = "2022-07-10";
+cursorObject.execute("SELECT NOMBRE, FECHA_PUB FROM persona p JOIN menciona m ON p.ID_PERSONA = m.ID_PERSONA JOIN noticia n ON m.URL_NOTICIA = n.URL_NOTICIA WHERE FECHA_PUB = '2022-07-10';")
+print("Personas mencionadas en una fecha especifica: ")
+print(str(cursorObject.fetchall()))
+print()
 
-
-##Evolucion de popularidad de una persona ##
-#SELECT ID_PERSONA, VALOR from tiene where ID_PERSONA="1";
+##Evolucion de popularidad de una persona, cambiar ID_PERSONA="x" para ver otra persona de la base de datos##
 cursorObject.execute('SELECT ID_PERSONA, VALOR from tiene where ID_PERSONA="1"')
 
 Lista_POP = list(cursorObject.fetchall())
@@ -38,7 +39,9 @@ elif  d1[5]==d1[4]:
 else:
   print ("Comparacion Popularidad mes actual con mes anterior: +",round (((d1[5]/d1[4])*100)-100)," %")
 print(Lista_POP)
-
+print()
 
 ##5 medios de prensa mas antiguos de una region 
-##SELECT * FROM medio WHERE REGION = "3" ORDER BY FECHA_CRE ASC LIMIT 5;
+cursorObject.execute("SELECT NOMBRE, FECHA_CRE FROM medio WHERE REGION = '3' ORDER BY FECHA_CRE ASC LIMIT 5;")
+print("5 medios de prensa mas antiguos de una region: ")
+print(str(cursorObject.fetchall()))
