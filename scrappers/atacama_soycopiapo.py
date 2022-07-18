@@ -59,14 +59,14 @@ def extraer_urls():
 
 def scraper():
       hrefs = extraer_urls()
+      datos_tupla = []
       for href in hrefs:
             if "/copiapo/" in href:
                   url = URL_MEDIO[:23] + href
                   renderizar(0,url)
                   ttf = session.loop.run_until_complete(extraer_xpaths(WAIT_NEWS,XPATH_TITLE,XPATH_TEXT,XPATH_DATE))
-                  print("[TITULO]:", ttf[0], "\n[TEXTO]:", ttf[1], "\n[FECHA]:", ttf[2])
-
-#scraper()
+                  datos_tupla.append(tuple((url,ttf[0],ttf[1],ttf[2])))
+      return datos_tupla
 
 def scrap_text():
       hrefs = extraer_urls()
@@ -78,6 +78,4 @@ def scrap_text():
                   ttf = session.loop.run_until_complete(extraer_xpaths(WAIT_NEWS,XPATH_TEXT))
                   textos.append(ttf[0])
       return textos
-
-print(scrap_text())
 
