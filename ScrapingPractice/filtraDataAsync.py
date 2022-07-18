@@ -33,19 +33,21 @@ session = HTMLSession()
 url = 'https://www.soychile.cl/copiapo'
 r = session.get(url,headers=headers)
 
-r.html.render(sleep=1, scrolldown=0)
+r.html.render(wait=10)
 
-articles = r.html.find('article')
+selector = '.div.destacadas-wrapper'
 
+nota = r.html.find(selector)
+print(nota)
+"""
 for item in articles: 
     try:
         newsitem = item.find('h1', first=True) #Primeros filtros
         title = newsitem.text
-        link = newsitem.absolute_links
-        print(title, link)
+        print(title)
     except:
         pass
-
+"""
 """
 selector = '.entry-content'
 

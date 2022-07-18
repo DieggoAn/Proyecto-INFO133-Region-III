@@ -15,7 +15,7 @@ def searchItem():
     #= Solicitar estructura web
     headers = {'user-agent':randAgent }
     session = HTMLSession()
-    numPag = 2
+    numPag = 1
     #url = 'https://www.chanarcillo.cl/category/region-actualidad/page/1/'
     url = 'https://www.chanarcillo.cl/category/region-actualidad/page/'+str(numPag)+'/'
 
@@ -28,11 +28,11 @@ def searchItem():
             newsitem = item.find('h2', first=True) 
             title   = newsitem.text
             link    = newsitem.absolute_links
-            formato = ",".join(link)
-            noticia = noticiaText(formato)
+            formatLink = ",".join(link)
+            noticia = noticiaText(formatLink)
             newstime = item.find('time', first=True)
             fecha    = formatoDate(newstime.text)
-            listRaw.append(tuple((link, title, fecha, noticia)))
+            listRaw.append(tuple((formatLink, title, noticia, fecha)))
         except Exception as e:
             print("Error:", e)
     return listRaw
@@ -94,4 +94,4 @@ def main():
         print("----------------->",c,"<-------------------------")
         print(i,"")
     ##------------------------- FIN CODIGO ------------------------
-#main()
+main()
