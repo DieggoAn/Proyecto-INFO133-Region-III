@@ -1,9 +1,16 @@
 from typing import TextIO
-import chanarcillo_atacama  #Cuando se ejecuta main.py , ejecuta .chanarcilloNews.py
+import atacama_chanarcillo  #Cuando se ejecuta main.py , ejecuta .chanarcilloNews.py
+import atacama_atacamaenlinea
+import atacama_tamarillano
 import mysql.connector
+print("Start Scraping...")
 
-dataChanarcillo = chanarcillo_atacama.searchItem()
-
+dataChanarcillo = atacama_chanarcillo.searchItem()
+print("Ready Chanarcillo . . .")
+dataAtacamaenlinea = atacama_atacamaenlinea.searchItem() 
+print("Ready AtacamaOnline . . .")
+datatamarillano = atacama_tamarillano.searchItem() 
+print("Ready tamarillo . . .")
 #=======================================================#
 ### Connect to MariaDB Platform
 inputUserOn = True
@@ -31,7 +38,7 @@ def commit(cursor):    ## make the changes
   print(f"Last Inserted ID: {cursor.lastrowid}")
   mydb.close()
 #
-def InsertRow(row): #Insertar 1 filas
+def insertRow(row): #Insertar 1 filas
   cursor = mydb.cursor() 
   try: 
     sql = "INSERT INTO NOTICIA (URL_NOTICIA, TITULO, TEXTO, FECHA_PUB) VALUES (%s, %s, %s, %s)"
@@ -40,20 +47,30 @@ def InsertRow(row): #Insertar 1 filas
       print(f"Error: {e}")
   commit(cursor)
 #
-def InsertManyRow(dataInsert): #Insertar multiples-filas en formato lista de *(tupla,)*    
+def insertManyRow(dataInsert): #Insertar multiples-filas en formato lista de *(tupla,)*    
+  global cursor
   cursor = mydb.cursor()
   try: 
     sql = "INSERT INTO NOTICIA (URL_NOTICIA, TITULO, TEXTO, FECHA_PUB) VALUES (%s, %s, %s, %s)"
     cursor.executemany(sql, dataInsert)
   except mysql.Error as e: 
     print(f"Error: {e}")
-  commit(cursor)
+  #commit(cursor)
 
 #
+def autoDB():
+  cursor = mydb.cursor()
+  insertManyRow(dataChanarcillo)
+  print("Ready Chanarcillo on MariaDB")
+  insertManyRow(dataAtacamaenlinea)
+  print("Ready Atacamaenlinea on MariaDB")
+  insertManyRow(datatamarillano)  
+  print("Ready tamarillano on MariaDB")
+  commit(cursor)
+
+
 ##--------------------FIN DE Funciones -------------------
 
 ##------------------INICIO--Ejecutar Funciones-------------------
 
-#InsertRow(test)            #Inserta 1 filas
-InsertManyRow(dataChanarcillo)
-
+autoDB()
