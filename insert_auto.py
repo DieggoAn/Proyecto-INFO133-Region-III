@@ -11,6 +11,11 @@ dataAtacamaenlinea = atacama_atacamaenlinea.searchItem()
 print("Ready AtacamaOnline . . .")
 datatamarillano = atacama_tamarillano.searchItem() 
 print("Ready tamarillo . . .")
+##---------------------->Inicio Codigo Marco <--------------------------------
+import scrappers.atacama_soycopiapo as soycopiapo
+import scrappers.atacama_quehaydecierto as quehaydecierto
+import scrappers.atacama_digitalfm as digitalfm
+##---------------------->Fin Codigo Marco <--------------------------------
 #=======================================================#
 ### Connect to MariaDB Platform
 inputUserOn = True
@@ -51,9 +56,9 @@ def insertManyRow(dataInsert): #Insertar multiples-filas en formato lista de *(t
   global cursor
   cursor = mydb.cursor()
   try: 
-    sql = "INSERT INTO NOTICIA (URL_NOTICIA, TITULO, TEXTO, FECHA_PUB) VALUES (%s, %s, %s, %s)"
+    sql = "INSERT INTO NOTICIA (URL_NOTICIA, TITULO, TEXTO, FECHA_PUB, URL_MEDIO) VALUES (%s, %s, %s, %s, %s)"
     cursor.executemany(sql, dataInsert)
-  except mysql.Error as e: 
+  except Exception as e: 
     print(f"Error: {e}")
   #commit(cursor)
 
@@ -74,3 +79,25 @@ def autoDB():
 ##------------------INICIO--Ejecutar Funciones-------------------
 
 autoDB()
+def InsertUrl(var_list,url):
+  lista_tupla = []
+  for i in var_list:
+    lista_tupla.append(i + tuple((url,)))
+  return lista_tupla
+
+cursor = mydb.cursor(buffered=True)
+cursor.execute("SELECT URL_MEDIO FROM MEDIO")
+for i in cursor:
+  data = []
+  if i[0] == 'https://www.soychile.cl/copiapo/':
+    data = soycopiapo.scraper()
+  elif i[0] == 'https://www.elquehaydecierto.cl/':
+    data = quehaydecierto.scraper()
+  elif i[0] == 'https://www.digitalfm.cl/':
+    data = digitalfm.scraper()
+  else:
+    print(i[0], "No tiene funcion de Scraping")
+  if data != []:
+    data = InsertUrl(data,i[0])
+    insertManyRow(data)
+mydb.close()
