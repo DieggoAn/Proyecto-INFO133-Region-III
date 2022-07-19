@@ -7,8 +7,21 @@ randAgent = USER_AGENT()
 
 
 def formatoDate(dateRaw):
-    date =  parser.parse(dateRaw)
-    return date.isoformat()
+    dateRaw = dateRaw.split(" ")
+    m = {
+        'enero,': "01",'febrero,': "02",'marzo,': "03",'abril,': "04",
+        'mayo,': "05",'junio,': "06",'julio,': "07",'agosto,': "08",
+        'septiembre,': "09",'octubre,': "10",'noviembre,': "11",'diciembre,': "12"
+    }
+    dia =  dateRaw[0]
+    mes =  dateRaw[1]
+    anio = dateRaw[2]
+    try:
+        out = str(m[mes.lower()])
+        date = str(anio+"/"+out+"/"+dia)
+        return date
+    except:
+        raise ValueError('No es un mes')
 
 # PRIMERA FUNCION, Busca Los h2 , link , fecha
 #Retorna una tupla con los LINK, titulos y fecha en la Lista listRaw
@@ -27,17 +40,14 @@ def searchItem():
     for item in articles:
         try:
             newsitem = item.find('h2', first=True) #Primeros filtros
-
-            title = newsitem.text,
+            title = newsitem.text
             link  = newsitem.absolute_links
             newstime = item.find('time', first=True)
-            fecha = newstime.text
             formatLink = ",".join(link)
             noticia = noticiaText(formatLink)
             newstime = item.find('time', first=True)
-            #fecha    = formatoDate(newstime.text)w
-            #FALTA FORMATEAR LA FECHA <-------------------------------------------------------------------------------------------------------
-            listRaw.append(tuple((formatLink, title,noticia, fecha )))
+            fecha    = formatoDate(newstime.text)
+            listRaw.append(tuple((formatLink, title,noticia,fecha)))
         except Exception as e:
             print("Error:", e)
     return listRaw
@@ -60,7 +70,14 @@ def noticiaText(direccion):
 
 
 #---------------------------------------------------
-dataa = searchItem()
-for i in dataa:
-    print(i)
-    print("")
+def main():
+    formatForDB    = searchItem()                  #Recolecta los link con su (titulos, texto, fecha)
+    ##----------------------IMPRIME EN CONSOLA -> LAS NOTICIAS <- -------------------
+    c=0
+    for i in formatForDB:
+        c+=1
+        print("----------------->",c,"<-------------------------")
+        print(i,"")
+    ##----------------------
+#
+#main()
