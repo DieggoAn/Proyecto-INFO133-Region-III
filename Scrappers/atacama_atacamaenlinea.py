@@ -1,5 +1,8 @@
 from requests_html import HTMLSession
 from AGENT import USER_AGENT
+import dateutil.parser as parser
+##
+##s
 global session
 global headers
 #= Agentes de usuario para ingresar a una pagina sin ser identificado como un bot
@@ -8,6 +11,32 @@ randAgent = USER_AGENT()
 #= Solicitar estructura web
 session = HTMLSession()
 headers = {'user-agent':randAgent }
+##
+##
+#months = ("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+#day =   dateRaw[:2]
+#mes =   dateRaw[6:11]
+#year=   dateRaw[15:]
+    
+##  
+
+def formatoDate(dateRaw):
+    dateRaw = dateRaw.split(" de ")
+    m = {
+        'enero': "01",'febrero': "02",'marzo': "03",'abril': "04",
+        'mayo': "05",'junio': "06",'julio': "07",'agosto': "08",
+        'septiembre': "09",'octubre': "10",'noviembre': "11",'diciembre': "12"
+    }
+    dia =  dateRaw[0]
+    mes =  dateRaw[1]
+    anio = dateRaw[2]
+    try:
+        out = str(m[mes.lower()])
+        date = str(anio+"/"+out+"/"+dia)
+        return date
+    except:
+        raise ValueError('No es un mes')
+    
 ##
 def searchItem():    
 
@@ -26,8 +55,8 @@ def searchItem():
             noticia = noticiaText(formatLink,'.inner-entry-content')
             newsfecha    = item.find('.posts-date', first=True) 
 
-            fecha = newsfecha.text      #   FALTA FORMATEAR LA FECHA <-------------------------------------------
-
+            #fecha = newsfecha.text      #   FALTA FORMATEAR LA FECHA <-------------------------------------------
+            fecha = formatoDate(newsfecha.text)
             formatForDB.append(tuple((formatLink,title, noticia,fecha)))
         except Exception as e:
             pass
@@ -55,6 +84,8 @@ def main():
         print(i,"")
     ##----------------------
 #
-main()
+#main()
 
-#noticiaText('http://www.atacamaenlinea.cl/participacion-femenina-en-las-empresas-un-eje-prioritario/columnas/','.inner-entry-content')
+
+##
+#searchItem()

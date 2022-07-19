@@ -36,11 +36,11 @@ def searchItem():
             formatLink  = ",".join(link)
             fecha       = formatLink[27:37]
             fecha       = formatoDate(fecha)
-            if(c < 2 ):
-                noticia = noticiaText(formatLink,'.entry-content',0)
-            else:                
-                noticia = noticiaText(formatLink,'.elementor-widget-container',10)
-            
+            #if(c < 2 ):
+            #    noticia = noticiaText(formatLink,'.entry-content',0)
+            #    print(noticia)
+            #else:                
+            noticia = noticiaText(formatLink,'.elementor-widget-container',10)
             formatForDB.append(tuple((formatLink,title,noticia,fecha)))
             c+=1
         except Exception as e:
@@ -70,5 +70,5 @@ def main():
 
 
 #main <--- Imprime la lista
-main()
+#main()
 
