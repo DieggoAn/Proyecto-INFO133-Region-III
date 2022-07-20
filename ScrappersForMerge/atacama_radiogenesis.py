@@ -46,31 +46,31 @@ xpath_text="//div[@class='elementor-widget-container']//p"
 
 all_urls = response.html.xpath(xpath_url)
 
-def scraper():
-        datos_tupla = []
-        for url in all_urls:
-                article_url = ""+ url
 
-                headers = {'user-agent':random.choice(USER_AGENT_LIST) }
-                response = session.get(article_url,headers=headers)
-                title = response.html.xpath('//div//h1')[0].text
+for url in all_urls:
+        article_url = "https://www.radiogennesis.cl/noticias/" + url
 
-                date = find_date(article_url)
-                ##date = response.html.xpath(xpath_date)[0]
+        headers = {'user-agent':random.choice(USER_AGENT_LIST) }
+        response = session.get(article_url,headers=headers)
+        title = response.html.xpath('//div//h1')[0].text
 
-                list_p = response.html.xpath(xpath_text)
+        date = find_date(article_url)
+        ##date = response.html.xpath(xpath_date)[0]
 
-                text=""
-                for p in list_p:
-                        content = p.text
-                        content = w3lib.html.remove_tags(content)
-                        content = w3lib.html.replace_escape_chars(content)
-                        content = html.unescape(content)
-                        content = content.strip()
-                        text=text+" "+content
+        list_p = response.html.xpath(xpath_text)
 
-                datos_tupla.append(tuple((article_url,title,text,date)))
-        return datos_tupla
+        text=""
+        for p in list_p:
+                content = p.text
+                content = w3lib.html.remove_tags(content)
+                content = w3lib.html.replace_escape_chars(content)
+                content = html.unescape(content)
+                content = content.strip()
+                text=text+" "+content
 
+        print(article_url)
+        print(title)
+        print(date)
+        print(text)
+        print()
 
-scraper()
