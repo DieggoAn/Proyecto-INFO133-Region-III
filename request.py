@@ -15,19 +15,19 @@ dataBase = mysql.connector.connect(
 cursorObject = dataBase.cursor(buffered=True)
 
 ##contador noticias por medio
-cursorObject.execute("SELECT URL_MEDIO, count(URL_MEDIO) from noticia group by URL_MEDIO;") 
+cursorObject.execute("SELECT URL_MEDIO, COUNT(URL_MEDIO) FROM NOTICIA GROUP BY URL_MEDIO;") 
 print("Cuantas noticias ha publicado cada medio: ")
 print(str(cursorObject.fetchall()))
 print()
 
 ##Persona mencionada en una noticia en un dia especifico //Modificar valor de FECHA_PUB
-cursorObject.execute("SELECT NOMBRE, FECHA_PUB FROM persona p JOIN menciona m ON p.ID_PERSONA = m.ID_PERSONA JOIN noticia n ON m.URL_NOTICIA = n.URL_NOTICIA WHERE FECHA_PUB = '2022-07-19';")
+cursorObject.execute("SELECT NOMBRE, FECHA_PUB FROM PERSONA p JOIN MENCIONA m ON p.ID_PERSONA = m.ID_PERSONA JOIN NOTICIA n ON m.URL_NOTICIA = n.URL_NOTICIA WHERE FECHA_PUB = '2022-07-19';")
 print("Personas mencionadas en una fecha especifica: ")
 print(str(cursorObject.fetchall()))
 print()
 
 ##Evolucion de popularidad de una persona, cambiar ID_PERSONA="x" para ver otra persona de la base de datos##
-cursorObject.execute('SELECT ID_PERSONA, VALOR from tiene where ID_PERSONA="1"')
+cursorObject.execute('SELECT ID_PERSONA, VALOR FROM TIENE WHERE ID_PERSONA="1" ORDER BY FECHA_POP ASC')
 
 Lista_POP = list(cursorObject.fetchall())
 
@@ -42,6 +42,6 @@ print(Lista_POP)
 print()
 
 ##5 medios de prensa mas antiguos de una region 
-cursorObject.execute("SELECT NOMBRE, FECHA_CRE FROM medio WHERE REGION = '3' ORDER BY FECHA_CRE ASC LIMIT 5;")
+cursorObject.execute("SELECT NOMBRE, FECHA_CRE FROM MEDIO WHERE REGION = '3' ORDER BY FECHA_CRE ASC LIMIT 5;")
 print("5 medios de prensa mas antiguos de una region: ")
 print(str(cursorObject.fetchall()))

@@ -20,7 +20,7 @@ dataBase = mysql.connector.connect(
 # Definir objeto cursos
 cursorObject = dataBase.cursor(buffered=True)
 
-cursorObject.execute('select texto from noticia where URL_NOTICIA = "www.mediodeprueba.com/noticias/noticiaFalsa";')
+cursorObject.execute('SELECT TEXTO FROM NOTICIA WHERE URL_NOTICIA = "www.mediodeprueba.com/noticias/noticiaFalsa";')
 
 text =str(cursorObject.fetchall())
 
