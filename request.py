@@ -21,7 +21,7 @@ print(str(cursorObject.fetchall()))
 print()
 
 ##Persona mencionada en una noticia en un dia especifico //Modificar valor de FECHA_PUB
-cursorObject.execute("SELECT NOMBRE, FECHA_PUB FROM persona p JOIN menciona m ON p.ID_PERSONA = m.ID_PERSONA JOIN noticia n ON m.URL_NOTICIA = n.URL_NOTICIA WHERE FECHA_PUB = '2022-07-17';")
+cursorObject.execute("SELECT NOMBRE, FECHA_PUB FROM persona p JOIN menciona m ON p.ID_PERSONA = m.ID_PERSONA JOIN noticia n ON m.URL_NOTICIA = n.URL_NOTICIA WHERE FECHA_PUB = '2022-07-19';")
 print("Personas mencionadas en una fecha especifica: ")
 print(str(cursorObject.fetchall()))
 print()

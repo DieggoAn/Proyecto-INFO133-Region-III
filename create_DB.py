@@ -133,13 +133,16 @@ val = [
 ##--------------------Persona Falsa--------------------------##
 # se usar para probar scripts requests.py y extract_persons
 persona = 'INSERT IGNORE INTO PERSONA(ID_PERSONA, WIKI, NOMBRE, PROFESION, NACIONALIDAD, FECHA_NAC) VALUES(1,"https://es.wikipedia.org/wiki/Gabriel_Boric","Gabriel Boric","Presidente de la Republica","Chilena","1986-02-11")'
+cursorObject.execute(persona) 
 cursorObject.execute('INSERT IGNORE INTO POPULARIDAD(FECHA_POP)VALUES("2022-07-01")')
 cursorObject.execute('INSERT IGNORE INTO POPULARIDAD(FECHA_POP)VALUES("2022-06-01")')
 cursorObject.execute('INSERT IGNORE INTO POPULARIDAD(FECHA_POP)VALUES("2022-05-01")')
 cursorObject.execute('INSERT IGNORE INTO MEDIO(URL_MEDIO,NOMBRE,PAIS,IDIOMA,REGION,FECHA_CRE)VALUES("www.mediodeprueba.com/","Medio de prueba","Chile","Español",3,"2022-06-19")')
 cursorObject.execute('INSERT IGNORE INTO NOTICIA (URL_NOTICIA,TITULO,TEXTO,FECHA_PUB,URL_MEDIO) VALUES("www.mediodeprueba.com/noticias/noticiaFalsa","Noticia falsa de prueba","A punto de cumplir 36 años, edad que lo habilita para sentarse en el Palacio de La Moneda a partir del 11 de marzo, Gabriel Boric Font fuma un cigarrillo tras otro a pocas horas de dar a conocer su gabinete.","2022,07-19","www.mediodeprueba.com/")')
 cursorObject.execute('INSERT IGNORE INTO MENCIONA (ID_PERSONA, URL_NOTICIA) VALUES (1,"www.mediodeprueba.com/noticias/noticiaFalsa")')
-cursorObject.execute(persona) 
+cursorObject.execute('INSERT IGNORE INTO TIENE (ID_PERSONA, FECHA_POP, VALOR) VALUES (1,"2022-07-01",100)')
+cursorObject.execute('INSERT IGNORE INTO TIENE (ID_PERSONA, FECHA_POP, VALOR) VALUES (1,"2022-06-01",75)')
+cursorObject.execute('INSERT IGNORE INTO TIENE (ID_PERSONA, FECHA_POP, VALOR) VALUES (1,"2022-05-01",83)')
 
 
 
