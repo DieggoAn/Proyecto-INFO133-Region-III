@@ -127,7 +127,8 @@ val = [
   ('https://www.soychile.cl/copiapo/', 'Soy Copiapo', 'Chile','Español',3,'2005-11-09'), 
   ('http://www.atacamaenlinea.cl/', 'Atacama en Linea', 'Chile','Español',3,'1987-12-31'), 
   ('https://tierramarillano.cl/', 'Tierramarillano', 'Chile','Español',3,'2009-03-19'), 
-  ('https://www.nostalgica.cl/', 'Nostalgica', 'Chile','Español',3,'2004-02-21')
+  ('https://www.nostalgica.cl/', 'Nostalgica', 'Chile','Español',3,'2004-02-21'),
+  ('https://www.maray.cl/', 'Maray', 'Chile','Español',3,'2014-06-30')
 ]
 ##--------------------Persona Falsa--------------------------##
 # se usar para probar scripts requests.py y extract_persons

@@ -69,5 +69,5 @@ def scraper():
                         content = content.strip()
                         text=text+" "+content
 
-                datos_tupla.append(tuple((article_url,title,text,date)))
+                datos_tupla.append(tuple((article_url,title,text,date,'https://www.maray.cl/')))
         return datos_tupla

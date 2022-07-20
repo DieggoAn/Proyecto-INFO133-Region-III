@@ -5,13 +5,18 @@ import scrappers.atacama_chanarcillo  #Cuando se ejecuta main.py , ejecuta .chan
 import scrappers.atacama_atacamaenlinea
 import scrappers.atacama_tamarillano
 import scrappers.atacama_nostalgia
-#
+##
+import scrappers.atacama_redatacama 
+import scrappers.atacama_maray
+import scrappers.atacama_radiogenesis
+##
 import  scrappers.atacama_soycopiapo
 import scrappers.atacama_digitalfm2
 ## FIN MEDIOS
 
 ##
 ##---------------------->Inicio Scraping <--------------------------------
+
 print("Start Scraping...")
 ##
 dataChanarcillo = scrappers.atacama_chanarcillo.searchItem()
@@ -26,7 +31,15 @@ print("Ready Tamarillo . . .",len(datatamarillano))
 ##
 dataNostalgia = scrappers.atacama_nostalgia.searchItem() 
 print("Ready Nostalgia . . .",len(dataNostalgia))
-#
+##
+dataRedAtacama = scrappers.atacama_redatacama.scraper()
+print ("Ready RedAtacama . . .",len(dataRedAtacama))
+##
+dataMaray = scrappers.atacama_maray.scraper()
+print ("Ready Maray . . . ",len(dataMaray) )
+##
+dataRadioGenesis = scrappers.atacama_radiogenesis.scraper()
+print ("Ready Radio Genesis . . .",len(dataRadioGenesis))
 ##---------------------->FIN Scraping <--------------------------------
 #
 ##---------------------->Inicio Codigo Marco <--------------------------------
@@ -105,6 +118,15 @@ def autoDB():
   #
   insertManyRow(dataNostalgia)  
   print("Ready Nostalgia on MariaDB")
+  #
+  insertManyRow(dataRedAtacama)
+  print("Ready RedAtacama on MariaDB")
+  #
+  insertManyRow(dataMaray)
+  print("Ready Maray on MariaDB")
+  #
+  insertManyRow(dataRadioGenesis)
+  print("Ready Radio Genesis on MariaDB")
   #Commit he ingresa los datos a la DB
   commit(cursor)
 
