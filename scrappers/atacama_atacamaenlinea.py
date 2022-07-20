@@ -57,7 +57,7 @@ def searchItem():
 
             #fecha = newsfecha.text      #   FALTA FORMATEAR LA FECHA <-------------------------------------------
             fecha = formatoDate(newsfecha.text)
-            formatForDB.append(tuple((formatLink,title, noticia,fecha)))
+            formatForDB.append(tuple((formatLink,title, noticia,fecha, 'http://www.atacamaenlinea.cl/')))
         except Exception as e:
             pass
             print(f"Error>:",e)

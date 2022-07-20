@@ -110,7 +110,7 @@ def commit(cursor):    ## make the changes
 def InsertManyRow(dataInsert): #Insertar multiples-filas en formato lista de *(tupla,)*    
   cursor = dataBase.cursor()
   try: 
-    sql = "INSERT INTO MEDIO (URL_MEDIO, NOMBRE, PAIS, IDIOMA, REGION, FECHA_CRE) VALUES (%s, %s, %s, %s, %s, %s)"
+    sql = "INSERT IGNORE INTO MEDIO (URL_MEDIO, NOMBRE, PAIS, IDIOMA, REGION, FECHA_CRE) VALUES (%s, %s, %s, %s, %s, %s)"
     cursor.executemany(sql, dataInsert)
   except Exception as e: 
     print(f"Error: {e}")
@@ -125,8 +125,20 @@ val = [
   ('https://www.digitalfm.cl/', 'Radio Digital FM', 'Chile','Español',3,'1962-04-27'),
   ('https://www.chanarcillo.cl/', 'Diario Chañarcillo', 'Chile','Español',3,'1988-02-10'),
   ('https://www.soychile.cl/copiapo/', 'Soy Copiapo', 'Chile','Español',3,'2005-11-09'), 
-  #('https://www.redatacama.com/', 'Red Atacama', 'Chile','Español',3,'2011-10-25'),
-  #('https://www.redatacama.com/', 'Red Atacama', 'Chile','Español',3,'1873-01-18'),
+  ('http://www.atacamaenlinea.cl/', 'Atacama en Linea', 'Chile','Español',3,'1987-12-31'), 
+  ('https://tierramarillano.cl/', 'Tierramarillano', 'Chile','Español',3,'2009-03-19'), 
+  ('https://www.nostalgica.cl/', 'Nostalgica', 'Chile','Español',3,'2004-02-21')
 ]
+##--------------------Persona Falsa--------------------------##
+persona = 'INSERT IGNORE INTO PERSONA(ID_PERSONA, WIKI, NOMBRE, PROFESION, NACIONALIDAD, FECHA_NAC) VALUES(1,"https://es.wikipedia.org/wiki/Gabriel_Boric","Gabriel Boric","Presidente de la Republica","Chilena","1986-02-11")'
+cursorObject.execute('INSERT IGNORE INTO POPULARIDAD(FECHA_POP)VALUES("2022-07-01")')
+cursorObject.execute('INSERT IGNORE INTO POPULARIDAD(FECHA_POP)VALUES("2022-06-01")')
+cursorObject.execute('INSERT IGNORE INTO POPULARIDAD(FECHA_POP)VALUES("2022-05-01")')
+cursorObject.execute('INSERT IGNORE INTO MEDIO(URL_MEDIO,PAIS,IDIOMA,REGION,FECHA_CRE)VALUES("www.mediodeprueba.com/","Medio de prueba","Chile","Español",3,"2022-06-19")')
+cursorObject.execute('INSERT IGNORE INTO NOTICIA (URL_NOTICIA,TITULO,TEXTO,FECHA_PUB,URL_MEDIO) VALUES("www.mediodeprueba.com/noticias/noticiaFalsa","Noticia falsa de prueba","A punto de cumplir 36 años, edad que lo habilita para sentarse en el Palacio de La Moneda a partir del 11 de marzo, Gabriel Boric Font fuma un cigarrillo tras otro a pocas horas de dar a conocer su gabinete.","2022,07-19","www.mediodeprueba.com/")')
+cursorObject.execute('INSERT IGNORE INTO MENCIONA (ID_PERSONA, URL_NOTICIA) VALUES (1,"www.mediodeprueba.com/noticias/noticiaFalsa")')
+cursorObject.execute(persona) 
+
+
 
 InsertManyRow(val) 

@@ -22,7 +22,7 @@ def searchItem():
 
     r = session.get(url,headers=headers)
     articles = r.html.find('article')
-
+    medio = 'https://www.chanarcillo.cl/'
     formatForDB   = []
     for item in articles:
         try:
@@ -33,7 +33,7 @@ def searchItem():
             noticia = noticiaText(formatLink)
             newstime = item.find('time', first=True)
             fecha    = formatoDate(newstime.text)
-            formatForDB.append(tuple((formatLink, title, noticia, fecha)))
+            formatForDB.append(tuple((formatLink, title, noticia, fecha, medio)))
         except Exception as e:
             print("Error:", e)
     return formatForDB

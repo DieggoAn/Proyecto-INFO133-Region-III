@@ -21,7 +21,7 @@ print(str(cursorObject.fetchall()))
 print()
 
 ##Persona mencionada en una noticia en un dia especifico //Modificar valor de FECHA_PUB
-cursorObject.execute("SELECT NOMBRE, FECHA_PUB FROM persona p JOIN menciona m ON p.ID_PERSONA = m.ID_PERSONA JOIN noticia n ON m.URL_NOTICIA = n.URL_NOTICIA WHERE FECHA_PUB = '2022-07-10';")
+cursorObject.execute("SELECT NOMBRE, FECHA_PUB FROM persona p JOIN menciona m ON p.ID_PERSONA = m.ID_PERSONA JOIN noticia n ON m.URL_NOTICIA = n.URL_NOTICIA WHERE FECHA_PUB = '2022-07-17';")
 print("Personas mencionadas en una fecha especifica: ")
 print(str(cursorObject.fetchall()))
 print()
@@ -32,12 +32,12 @@ cursorObject.execute('SELECT ID_PERSONA, VALOR from tiene where ID_PERSONA="1"')
 Lista_POP = list(cursorObject.fetchall())
 
 d1 = [item[1] for item in Lista_POP]
-if d1[5] < d1[4]:
-  print ("Comparacion Popularidad mes actual con mes anterior: -", round(100 - (d1[0]/d1[1])*100)," %")
-elif  d1[5]==d1[4]:
+if d1[-1] < d1[-2]:
+  print ("Comparacion Popularidad mes actual con mes anterior: -", round(100 - (d1[-1]/d1[-2])*100)," %")
+elif  d1[-1]==d1[-2]:
   print ("Comparacion Popularidad mes actual con mes anterior: +0 %")
 else:
-  print ("Comparacion Popularidad mes actual con mes anterior: +",round (((d1[5]/d1[4])*100)-100)," %")
+  print ("Comparacion Popularidad mes actual con mes anterior: +",round (((d1[-1]/d1[-2])*100)-100)," %")
 print(Lista_POP)
 print()
 

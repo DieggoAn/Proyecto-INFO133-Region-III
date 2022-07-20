@@ -45,7 +45,7 @@ def searchItem():
             noticia = noticiaText(formatLink)
             newstime = item.find('time', first=True)
             fecha    = formatoDate(newstime.text)
-            listRaw.append(tuple((formatLink, title,noticia,fecha)))
+            listRaw.append(tuple((formatLink, title,noticia,fecha,'https://www.nostalgica.cl/')))
         except Exception as e:
             print("Error:", e)
     return listRaw

@@ -41,7 +41,7 @@ def searchItem():
             #    print(noticia)
             #else:                
             noticia = noticiaText(formatLink,'.elementor-widget-container',10)
-            formatForDB.append(tuple((formatLink,title,noticia,fecha)))
+            formatForDB.append(tuple((formatLink,title,noticia,fecha,'https://tierramarillano.cl/')))
             c+=1
         except Exception as e:
             print(f"Error>:",e)
