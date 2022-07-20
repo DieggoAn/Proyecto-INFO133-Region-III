@@ -2,7 +2,7 @@ import mysql.connector
 
 import scrappers.atacama_soycopiapo as soycopiapo
 import scrappers.atacama_quehaydecierto as quehaydecierto
-import scrappers.atacama_digitalfm as digitalfm
+import scrappers.atacama_digitalfm2 as digitalfm
 
 #=======================================================#
 ### Connect to MariaDB Platform
@@ -33,7 +33,7 @@ def commit(cursor):    ## make the changes
 def InsertManyRow(dataInsert): #Insertar multiples-filas en formato lista de *(tupla,)*    
   print(dataInsert)
   try: 
-    sql = "INSERT INTO NOTICIA (URL_NOTICIA, TITULO, TEXTO, FECHA_PUB, URL_MEDIO) VALUES (%s, %s, %s, %s, %s)"
+    sql = "INSERT IGNORE INTO NOTICIA (URL_NOTICIA, TITULO, TEXTO, FECHA_PUB, URL_MEDIO) VALUES (%s, %s, %s, %s, %s)"
     cursor.executemany(sql, dataInsert)
   except Exception as e: 
     print(f"Error: {e}")

@@ -1,30 +1,30 @@
 from typing import TextIO
 import mysql.connector
 ## INICIO MEDIOS
-import atacama_chanarcillo  #Cuando se ejecuta main.py , ejecuta .chanarcilloNews.py
-import atacama_atacamaenlinea
-import atacama_tamarillano
-import atacama_nostalgia
+import scrappers.atacama_chanarcillo  #Cuando se ejecuta main.py , ejecuta .chanarcilloNews.py
+import scrappers.atacama_atacamaenlinea
+import scrappers.atacama_tamarillano
+import scrappers.atacama_nostalgia
 #
-import  atacama_soycopiapo
-import atacama_digitalfm2
+import  scrappers.atacama_soycopiapo
+import scrappers.atacama_digitalfm2
 ## FIN MEDIOS
 
 ##
 ##---------------------->Inicio Scraping <--------------------------------
 print("Start Scraping...")
 ##
-dataChanarcillo = atacama_chanarcillo.searchItem()
+dataChanarcillo = scrappers.atacama_chanarcillo.searchItem()
 print("Ready Chanarcillo . . .",len(dataChanarcillo))
 ##
-dataAtacamaenlinea = atacama_atacamaenlinea.searchItem() 
+dataAtacamaenlinea = scrappers.atacama_atacamaenlinea.searchItem() 
 print("Ready AtacamaOnline . . .",len(dataAtacamaenlinea))
 ##
-datatamarillano = atacama_tamarillano.searchItem() 
+datatamarillano = scrappers.atacama_tamarillano.searchItem() 
 print("Ready Tamarillo . . .",len(datatamarillano))
 ##
 ##
-dataNostalgia = atacama_nostalgia.searchItem() 
+dataNostalgia = scrappers.atacama_nostalgia.searchItem() 
 print("Ready Nostalgia . . .",len(dataNostalgia))
 #
 ##---------------------->FIN Scraping <--------------------------------
@@ -143,11 +143,11 @@ def funcMarcoInsert():
   for i in cursor:
     data = []
     if i[0] == 'https://www.soychile.cl/copiapo/':
-      data = atacama_soycopiapo2.scraper()
+      data = scrappers.atacama_soycopiapo2.scraper()
     elif i[0] == 'https://www.elquehaydecierto.cl/':
-      data = ata.scraper()
+      data = scrappers.atacama_quehaydecierto.scraper()
     elif i[0] == 'https://www.digitalfm.cl/':
-      data = atacama_digitalfm2.scraper()
+      data = scrappers.atacama_digitalfm2.scraper()
     else:
       print(i[0], "No tiene funcion de Scraping")
     if data != []:

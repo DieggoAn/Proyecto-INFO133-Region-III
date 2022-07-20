@@ -36,8 +36,6 @@ for item in result1.items():
         timestamp=article['timestamp'][:8] #first 8 digits
         views=article['views']
         visitas.append(views) 
-        print(timestamp)
-        print(views)
 
 print ("Visitas este mes: ", visitas[-1])
 if visitas[-1] < visitas[-2]:

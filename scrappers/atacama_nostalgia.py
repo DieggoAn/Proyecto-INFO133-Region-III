@@ -1,5 +1,3 @@
-from hashlib import new
-from more_itertools import first
 from requests_html import HTMLSession
 from AGENT import USER_AGENT
 import dateutil.parser as parser
